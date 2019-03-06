@@ -1,0 +1,71 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.root {
+	   -fx-background-image: url("back1.jpg"); 
+	    -fx-background-repeat: repeat; 
+} 
+
+
+.text{
+	-fx-font-size: 16px;
+	-fx-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 0.2px;
+}
+
+#Names {
+	-fx-font-size: 28px;
+	-fx-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 0.2px;
+}
+
+
+#check {
+	 -fx-fill: FIREBRICK;
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );  
+}
+
+#btn {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(rgb(80,80,80), rgb(100,100,100));
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+#btn:hover {
+    -fx-background-color: linear-gradient(rgb(200,200,200), rgb(100, 100, 100));
+}
+
+#coords{
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+#schrbtn{
+	 -fx-background-color: rgba(255, 255, 255, 0);
+}
+#schrbtn:hover {
+	-fx-background-color: rgba(0,0,0,0.75);
+}
+
+#sliderR{
+	-fx-color: rgb(255,0,0);
+}
+#sliderG
+{
+    -fx-color:rgb(0,255,0);
+}
+#sliderB
+{
+    -fx-color:rgb(0,0,255);
+}
+#sliderS
+{
+    -fx-color:rgb(0,0,0);
+}
+
+
