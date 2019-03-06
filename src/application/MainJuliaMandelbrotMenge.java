@@ -17,6 +17,7 @@ import javafx.util.Duration;
 public class MainJuliaMandelbrotMenge extends Application
 {
 
+	//TODO:  render the sets when window size is changed!!
 	BorderPane root;
 	Scene scene;
 	Stage stage;
@@ -48,8 +49,8 @@ public class MainJuliaMandelbrotMenge extends Application
 
 			gui.setMandelbrotmengeAndJuliamenge(mandelbrotMenge, juliaMenge);
 
-			mandelbrotMenge.renderMandelbrot();
-			juliaMenge.renderJulia();
+			renderMandelbrot();
+			renderJulia();
 
 			setKeyListener();
 			setScrollListener();
@@ -105,22 +106,23 @@ public class MainJuliaMandelbrotMenge extends Application
 					}
 
 					double rotatex = Math.cos(circle) * ((double) (gui.rotateRadius.getValue()) / 100);
-					double rotatey = Math.sin(circle) * ((double) (gui.rotateRadius.getValue()) / 100);
+					double rotatey = -Math.sin(circle) * ((double) (gui.rotateRadius.getValue()) / 100);
 
 					gui.juliaRealPartOfNumber.setText("" + rotatex);
 					gui.juliaImaginaryPartOfNumber.setText("" + rotatey);
 
-//					if (gui.rotateRadius.getValue() == 0 || gui.rotateRadius.getValue() == gui.rotateRadius.getMax())
-//					{ 
-//						rotateValue *= -1;
-//					}
-//
-//					gui.rotateRadius.setValue(gui.rotateRadius.getValue() - rotateValue);
+					// if (gui.rotateRadius.getValue() == 0 || gui.rotateRadius.getValue() ==
+					// gui.rotateRadius.getMax())
+					// {
+					// rotateValue *= -1;
+					// }
+					//
+					// gui.rotateRadius.setValue(gui.rotateRadius.getValue() - rotateValue);
 
-					juliaMenge.renderJulia();
+					renderJulia();
 
 					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
-					mandelbrotMenge.renderMandelbrot();
+					renderMandelbrot();
 				}
 
 			}
@@ -156,9 +158,9 @@ public class MainJuliaMandelbrotMenge extends Application
 				gui.juliaRealPartOfNumber.setText(x + "");
 				gui.juliaImaginaryPartOfNumber.setText(y + "");
 
-				juliaMenge.renderJulia();
+				renderJulia();
 				// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
-				mandelbrotMenge.renderMandelbrot();
+				renderMandelbrot();
 			}
 		}
 	}
@@ -173,14 +175,14 @@ public class MainJuliaMandelbrotMenge extends Application
 			{
 
 				mandelbrotMenge.moveZoom(event.getDeltaY());
-				mandelbrotMenge.renderMandelbrot();
+				renderMandelbrot();
 			}
 
 			if (gui.juliaImageView.isHover())
 			{
 
 				juliaMenge.moveZoom(event.getDeltaY());
-				juliaMenge.renderJulia();
+				renderJulia();
 			}
 		});
 
@@ -225,7 +227,7 @@ public class MainJuliaMandelbrotMenge extends Application
 					}
 
 					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
-					mandelbrotMenge.renderMandelbrot();
+					renderMandelbrot();
 				}
 
 				if (gui.juliaImageView.isHover())
@@ -251,7 +253,7 @@ public class MainJuliaMandelbrotMenge extends Application
 						juliaMenge.moveXSetOffDown();
 					}
 
-					juliaMenge.renderJulia();
+					renderJulia();
 				}
 
 			}
@@ -265,5 +267,27 @@ public class MainJuliaMandelbrotMenge extends Application
 	{
 		launch(args);
 	}
+	
+	private void renderJulia() {
+		juliaMenge.renderJulia();
+		waitabit();
+	}
+	
+	private void renderMandelbrot() {
+		mandelbrotMenge.renderMandelbrot();
+		waitabit();
+	}
+	
+	private void waitabit() {
+		try
+		{
+			Thread.sleep(150);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 
 }

@@ -10,15 +10,15 @@ import javax.imageio.ImageIO;
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 
-public class Menge {
+abstract class Menge {
 
 	double xSetOff = 0, ySetOff = 0;
 	double moveSpeed = 0.05;
 	double zoom = 1;
 	double zoomChangeFactor = 2;
-	int maxIterations = 50;
+	int maxIterations = 1000;
 	
-	int imageWidth = 300, imageHeight = 300;
+	static int imageWidth = 300, imageHeight = 300;
 	
 	public double getxSetOff() {
 		return xSetOff;
@@ -90,21 +90,21 @@ public class Menge {
 		return imageWidth;
 	}
 	
-	public void setImageWidth(int imageWidth) {
-		this.imageWidth = imageWidth;
+	public static void setImageWidth(int w) {
+		imageWidth = w;
 	}
 	
-	public int getImageHeight() {
+	public static int getImageHeight() {
 		return imageHeight;
 	}
 	
-	public void setImageHeight(int imageHeight) {
-		this.imageHeight = imageHeight;
+	public static  void setImageHeight(int h) {
+		imageHeight = h;
 	}
 	
-	public void setImageSize(int imageWidth, int imageHeight) {
-		this.imageWidth = imageWidth;
-		this.imageHeight = imageHeight;
+	public static void setImageSize(int w, int h) {
+		imageWidth = w;
+		imageHeight = h;
 	}
 
 	protected Color getColorFromIterations(int iterationcount, String clr, Point zn) {

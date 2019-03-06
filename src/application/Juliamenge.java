@@ -5,11 +5,9 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JOptionPane;
 
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class Juliamenge extends Menge
@@ -27,30 +25,17 @@ public class Juliamenge extends Menge
 		scene = gui.scene;
 		sceneHeight = scene.getHeight();
 		sceneWidth = scene.getWidth();
-
-		gui.juliaRender.setOnMouseClicked(new EventHandler<MouseEvent>()
-		{
-			@Override
-			public void handle(MouseEvent arg0)
-			{
-
-				renderJulia();
-			}
-		});
-
-		gui.juliaSave.setOnMouseClicked((MouseEvent event) ->
-		{
-
-			BufferedImage imageToSave = createBufferedImageOfJuliaSet();
-
-			saveImage(imageToSave, "/Juliamenge_c=" + realOfC + "+" + imaginaryOfC + "i" + ".jpg");
-
-		});
 	}
 
 	public void renderJulia()
 	{
-		renderJulia(imageWidth, imageHeight);
+		new Thread()
+		{
+			public void run()
+			{
+				renderJulia(imageWidth, imageHeight);
+			}
+		}.start();
 	}
 
 	public void renderJulia(int width, int height)
@@ -92,7 +77,7 @@ public class Juliamenge extends Menge
 
 	}
 
-	private BufferedImage createBufferedImageOfJuliaSet()
+	public BufferedImage createBufferedImageOfJuliaSet()
 	{
 
 		setMaxIterations(getMaxIterations() * 2);
@@ -130,7 +115,7 @@ public class Juliamenge extends Menge
 		double real = X;
 		double imaginary = Y;
 		real = (((real - (width / 2)) / 100) * zoom + xSetOff);
-		imaginary = (((imaginary - (height / 2)) / 100) * zoom + ySetOff);
+		imaginary = -(((imaginary - (height / 2)) / 100) * zoom + ySetOff);
 
 		KomplexeZahl z = new KomplexeZahl(real, imaginary);
 

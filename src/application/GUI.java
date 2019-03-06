@@ -1,10 +1,12 @@
 package application;
 
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -107,8 +109,8 @@ public class GUI extends Group {
 		mandelReset.setTranslateX(sceneWidth * 0.3);
 		mandelReset.setTranslateY(sceneHeight * 0.95); 
 		
-		
-		
+		int size = (int)(Math.min(sceneWidth * .5, sceneHeight * .5));
+		Menge.setImageSize(size, size);
 		
 //Julia Stuff
 		juliaName.setTranslateX(sceneWidth * 0.55);
@@ -161,7 +163,6 @@ public class GUI extends Group {
 		easterEggButton.setTranslateX(sceneWidth * 0.3);
 		easterEggButton.setTranslateY(sceneHeight * 0.15);
 		easterEggButton.setPrefSize(sceneWidth * 0.1, sceneHeight * 0.1);
-
 	}
 
 	private void createMandelAndJuliaButtons() {
@@ -173,6 +174,24 @@ public class GUI extends Group {
 		mandelRender = new Button("Render");
 		mandelRender.setId("btn");
 		add(mandelRender);
+		
+		mandelRender.setOnMouseClicked(new EventHandler<MouseEvent>()
+		{
+			@Override
+			public void handle(MouseEvent arg0)
+			{
+				renderMandelbrot();
+			}
+		});
+
+		mandelSave.setOnMouseClicked((MouseEvent event) ->
+		{
+
+			BufferedImage imageToSave = mandelbrotMenge.createBufferedImageOfMandelbrotSet();
+
+			mandelbrotMenge.saveImage(imageToSave, "/Mandelbrot.jpg");
+
+		});
 
 		juliaSave = new Button("save");
 		juliaSave.setId("btn");
@@ -181,6 +200,25 @@ public class GUI extends Group {
 		juliaRender = new Button("Render");
 		juliaRender.setId("btn");
 		add(juliaRender);
+		
+		juliaRender.setOnMouseClicked(new EventHandler<MouseEvent>()
+		{
+			@Override
+			public void handle(MouseEvent arg0)
+			{
+
+				renderJulia();
+			}
+		});
+
+		juliaSave.setOnMouseClicked((MouseEvent event) ->
+		{
+
+			BufferedImage imageToSave = juliaMenge.createBufferedImageOfJuliaSet();
+
+			juliaMenge.saveImage(imageToSave, "/Juliamenge_c=" + juliaMenge.realOfC + "+" + juliaMenge.imaginaryOfC + "i" + ".jpg");
+
+		});
 
 	}
 
@@ -232,9 +270,9 @@ public class GUI extends Group {
 					juliaRealPartOfNumber.setText(x + "");
 					juliaImaginaryPartOfNumber.setText(y + "");
 
-					juliaMenge.renderJulia();
+					renderJulia();
 					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
-					mandelbrotMenge.renderMandelbrot();
+					renderMandelbrot();
 				}
 			}
 			if (event.getClickCount() == 2) {
@@ -287,7 +325,7 @@ public class GUI extends Group {
 			mandelbrotMenge.setxSetOff(0);
 			mandelbrotMenge.setySetOff(0);
 			mandelbrotMenge.setZoom(1);
-			mandelbrotMenge.renderMandelbrot();
+			renderMandelbrot();
 		});
 		mandelReset.setId("btn");
 		add(mandelReset);
@@ -297,7 +335,7 @@ public class GUI extends Group {
 			juliaMenge.setxSetOff(0);
 			juliaMenge.setySetOff(0);
 			juliaMenge.setZoom(1);
-			juliaMenge.renderJulia();
+			renderJulia();
 		});
 		juliaReset.setId("btn");
 		add(juliaReset);
@@ -344,15 +382,16 @@ public class GUI extends Group {
 		getChildren().add(node);
 		node.setTranslateX(0);
 		node.setTranslateY(0);
+		
+		Menge.setImageSize(screenWidth, screenHeight);
+		
 		if (node == mandelImageView) {
-			mandelbrotMenge.setImageSize(screenWidth, screenHeight);
-			mandelbrotMenge.setMaxIterations(100);
-			mandelbrotMenge.renderMandelbrot();
+			mandelbrotMenge.setMaxIterations(mandelbrotMenge.getMaxIterations() / 10);
+			renderMandelbrot();
 		}
 		if (node == juliaImageView) {
-			juliaMenge.setImageSize(screenWidth, screenHeight);
-			juliaMenge.setMaxIterations(100);
-			juliaMenge.renderJulia();
+			juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() / 10);
+			renderJulia();
 		}
 	}
 
@@ -361,12 +400,13 @@ public class GUI extends Group {
 		getChildren().clear();
 		addEverythingToGroup();
 		setGUIonSpot();
-		mandelbrotMenge.setImageSize(300, 300);
-		mandelbrotMenge.setMaxIterations(1000);
-		mandelbrotMenge.renderMandelbrot();
-		juliaMenge.setImageSize(300, 300);
-		juliaMenge.setMaxIterations(1000);
-		juliaMenge.renderJulia();
+		mandelbrotMenge.setMaxIterations(mandelbrotMenge.getMaxIterations() * 10);
+		renderMandelbrot();
+		juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() * 10);
+		renderJulia();
+		
+		int size = (int)(Math.min(scene.getWidth() * .5, scene.getHeight() * .5));
+		Menge.setImageSize(size, size);
 	}
 
 	public void removeEverythingFromGroup() {
@@ -406,5 +446,27 @@ public class GUI extends Group {
 		this.mandelbrotMenge = mandel;
 		this.juliaMenge = julia;
 	}
+	
+	private void renderJulia() {
+		juliaMenge.renderJulia();
+		waitabit();
+	}
+	
+	private void renderMandelbrot() {
+		mandelbrotMenge.renderMandelbrot();
+		waitabit();
+	}
+	
+	private void waitabit() {
+		try
+		{
+			Thread.sleep(150);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 
 }

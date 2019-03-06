@@ -3,11 +3,9 @@ package application;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class Mandelbrotmenge extends Menge
@@ -23,29 +21,17 @@ public class Mandelbrotmenge extends Menge
 		scene = gui.scene;
 		sceneHeight = scene.getHeight();
 		sceneWidth = scene.getWidth();
-
-		gui.mandelRender.setOnMouseClicked(new EventHandler<MouseEvent>()
-		{
-			@Override
-			public void handle(MouseEvent arg0)
-			{
-				renderMandelbrot();
-			}
-		});
-
-		gui.mandelSave.setOnMouseClicked((MouseEvent event) ->
-		{
-
-			BufferedImage imageToSave = createBufferedImageOfMandelbrotSet();
-
-			saveImage(imageToSave, "/Mandelbrot.jpg");
-
-		});
 	}
 
 	public void renderMandelbrot()
 	{
-		renderMandelbrotWithRedPoint(Double.parseDouble(gui.juliaRealPartOfNumber.getText()), Double.parseDouble(gui.juliaImaginaryPartOfNumber.getText()), imageWidth, imageHeight);
+		new Thread()
+		{
+			public void run()
+			{
+				renderMandelbrotWithRedPoint(Double.parseDouble(gui.juliaRealPartOfNumber.getText()), Double.parseDouble(gui.juliaImaginaryPartOfNumber.getText()), imageWidth, imageHeight);
+			}
+		}.start();
 	}
 
 	public void renderMandelbrotWithRedPoint(double redX, double redY, int width, int height)
@@ -87,7 +73,7 @@ public class Mandelbrotmenge extends Menge
 
 	}
 
-	private BufferedImage createBufferedImageOfMandelbrotSet()
+	public BufferedImage createBufferedImageOfMandelbrotSet()
 	{
 
 		setMaxIterations(getMaxIterations() * 2);
@@ -127,7 +113,7 @@ public class Mandelbrotmenge extends Menge
 		imaginary = (((imaginary - height / 2) / 100) * zoom + ySetOff);
 
 		KomplexeZahl c = new KomplexeZahl(real, imaginary);
-		
+
 		for (int i = 0; i <= maxIterations; i++)
 		{
 			z = z.square().addition(c);
