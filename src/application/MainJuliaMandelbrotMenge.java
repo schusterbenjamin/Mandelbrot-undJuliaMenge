@@ -16,8 +16,6 @@ import javafx.util.Duration;
 
 public class MainJuliaMandelbrotMenge extends Application
 {
-
-	//TODO:  render the sets when window size is changed!!
 	BorderPane root;
 	Scene scene;
 	Stage stage;
@@ -152,14 +150,13 @@ public class MainJuliaMandelbrotMenge extends Application
 			if (gui.mandelImageView.isHover())
 			{
 
-				double x = (((event.getX() - 150) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
-				double y = (((event.getY() - 150) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
+				double x = (((event.getX() - Menge.getImageWidth() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
+				double y = -(((event.getY() - Menge.getImageHeight() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
 
 				gui.juliaRealPartOfNumber.setText(x + "");
 				gui.juliaImaginaryPartOfNumber.setText(y + "");
 
 				renderJulia();
-				// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
 				renderMandelbrot();
 			}
 		}

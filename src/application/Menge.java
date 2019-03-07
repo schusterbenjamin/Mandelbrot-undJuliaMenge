@@ -86,7 +86,7 @@ abstract class Menge {
 		return maxIterations;
 	}
 	
-	public int getImageWidth() {
+	public static int getImageWidth() {
 		return imageWidth;
 	}
 	

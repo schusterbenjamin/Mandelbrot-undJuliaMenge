@@ -10,7 +10,6 @@ import javafx.scene.paint.Color;
 
 public class Mandelbrotmenge extends Menge
 {
-
 	GUI gui;
 	Scene scene;
 	double sceneHeight, sceneWidth;
@@ -57,8 +56,8 @@ public class Mandelbrotmenge extends Menge
 			}
 		}
 
-		int redMiddlePixelX = (int) (((redX - xSetOff) * 100) / zoom) + 150;
-		int redMiddlePixelY = (int) (((redY - ySetOff) * 100) / zoom) + 150;
+		int redMiddlePixelX = (int) (((redX - xSetOff) * 100) / zoom) + getImageWidth() / 2;
+		int redMiddlePixelY = -(int) (((redY - ySetOff) * 100) / zoom) + getImageHeight() / 2;
 
 		for (int i = redMiddlePixelX - 1; i <= redMiddlePixelX + 1; i++)
 		{
