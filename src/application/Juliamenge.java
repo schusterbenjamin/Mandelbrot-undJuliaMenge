@@ -1,6 +1,5 @@
 package application;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JOptionPane;
@@ -21,6 +20,7 @@ public class Juliamenge extends Menge
 
 	public Juliamenge(GUI gui)
 	{
+		super(gui);
 		this.gui = gui;
 		scene = gui.scene;
 		sceneHeight = scene.getHeight();
@@ -109,9 +109,6 @@ public class Juliamenge extends Menge
 
 	private Color calculateColorForPoint(int X, int Y, int width, int height)
 	{
-
-		Color color;
-
 		double real = X;
 		double imaginary = Y;
 		real = (((real - (width / 2)) / 100) * zoom + xSetOff);
@@ -121,23 +118,7 @@ public class Juliamenge extends Menge
 
 		KomplexeZahl c = new KomplexeZahl(realOfC, imaginaryOfC);
 
-		for (int i = 0; i <= maxIterations; i++)
-		{
-
-			z = z.square().addition(c);
-
-			if (z.getAbsoluteValue() > 2)
-			{
-				Point zn = new Point();
-				zn.setLocation(z.getReal(), z.getImaginary());
-				color = getColorFromIterations(i, gui.getJuliaColor(), zn);
-				return color;
-			}
-		}
-
-		color = Color.BLACK;
-
-		return color;
+		return calculateColorForKomplexNumbers(z, c, false);
 	}
 
 }

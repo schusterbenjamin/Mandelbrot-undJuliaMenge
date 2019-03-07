@@ -81,16 +81,16 @@ public class MainJuliaMandelbrotMenge extends Application
 				if (gui.rotate.isSelected())
 				{
 					rotate = true;
-					juliaMenge.setMaxIterations(100);
-					mandelbrotMenge.setMaxIterations(100);
+//					juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() / 10);
+//					mandelbrotMenge.setMaxIterations(mandelbrotMenge.getMaxIterations() / 10);
 				}
 				else
 				{
 					rotate = false;
 					if (!gui.mandelIsFullscreen && !gui.juliaIsFullscreen)
 					{
-						juliaMenge.setMaxIterations(1000);
-						mandelbrotMenge.setMaxIterations(1000);
+//						juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() * 10);
+//						mandelbrotMenge.setMaxIterations(mandelbrotMenge.getMaxIterations() * 10);
 					}
 				}
 

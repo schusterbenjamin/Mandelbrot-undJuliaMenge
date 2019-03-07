@@ -1,6 +1,5 @@
 package application;
 
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import javafx.scene.Scene;
@@ -16,6 +15,7 @@ public class Mandelbrotmenge extends Menge
 
 	public Mandelbrotmenge(GUI gui)
 	{
+		super(gui);
 		this.gui = gui;
 		scene = gui.scene;
 		sceneHeight = scene.getHeight();
@@ -113,21 +113,7 @@ public class Mandelbrotmenge extends Menge
 
 		KomplexeZahl c = new KomplexeZahl(real, imaginary);
 
-		for (int i = 0; i <= maxIterations; i++)
-		{
-			z = z.square().addition(c);
-
-			if (z.getAbsoluteValue() > 2)
-			{
-				// System.out.println("divergiert");
-				Point zn = new Point();
-				zn.setLocation(z.getReal(), z.getImaginary());
-				return getColorFromIterations(i, gui.getMandelColor(), zn);
-			}
-		}
-
-		return Color.BLACK;
-
+		return calculateColorForKomplexNumbers(z, c, true);
 	}
 
 }
