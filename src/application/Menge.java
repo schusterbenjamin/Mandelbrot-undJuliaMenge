@@ -202,7 +202,7 @@ abstract class Menge
 				KomplexeZahl test = new KomplexeZahl(zn.getX(), zn.getY());
 
 				double smooth = iterationcount + 1 - Math.log(Math.log(test.getAbsoluteValue()))/Math.log(2);
-				
+				//Yayyyy
 				color = Color.hsb(0.95f + 10 * smooth ,0.6f,1.0f);
 				break;
 			default:
