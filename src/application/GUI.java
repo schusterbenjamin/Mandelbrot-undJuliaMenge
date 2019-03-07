@@ -237,7 +237,7 @@ public class GUI extends Group {
 
 	private void createColorDropLists() {
 		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy",
-				"black & white", "test", "testTwo", "gray");
+				"black & white", "mandala", "crane", "gray", "test");
 		mandelColor = new ComboBox<String>(options);
 		mandelColor.setValue("white & black");
 		mandelColor.setId("btn");

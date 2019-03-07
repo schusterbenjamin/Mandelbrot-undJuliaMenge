@@ -190,20 +190,47 @@ abstract class Menge
 					color = Color.rgb(0, 0, iterationcountForOldMappings);
 				}
 				break;
-			case "test":
+			case "mandala":
 				double x = zn.getX();
 				double y = zn.getY();
 				double testValue = (Math.log(Math.sqrt(x * x + y * y))) / Math.pow(2, iterationcountForOldMappings) * Math.pow(x * x, Math.abs(y)) + 1;
 				color = Color.rgb(255, 255, 255); // TODO: remove this
 				color = Color.rgb(0, 0, (int) (255 / testValue));
 				break;
-			case "testTwo":
+			case "crane":
 
 				KomplexeZahl test = new KomplexeZahl(zn.getX(), zn.getY());
 
 				double smooth = iterationcount + 1 - Math.log(Math.log(test.getAbsoluteValue()))/Math.log(2);
 				//Yayyyy
 				color = Color.hsb(0.95f + 10 * smooth ,0.6f,1.0f);
+				break;
+				
+			case "test":
+				
+				Color[] mapping = new Color[16];
+				
+				mapping[0] = Color.rgb(66, 30, 15);
+			    mapping[1] = Color.rgb(25, 7, 26);
+			    mapping[2] = Color.rgb(9, 1, 47);
+			    mapping[3] = Color.rgb(4, 4, 73);
+			    mapping[4] = Color.rgb(0, 7, 100);
+			    mapping[5] = Color.rgb(12, 44, 138);
+			    mapping[6] = Color.rgb(24, 82, 177);
+			    mapping[7] = Color.rgb(57, 125, 209);
+			    mapping[8] = Color.rgb(134, 181, 229);
+			    mapping[9] = Color.rgb(211, 236, 248);
+			    mapping[10] = Color.rgb(241, 233, 191);
+			    mapping[11] = Color.rgb(248, 201, 95);
+			    mapping[12] = Color.rgb(255, 170, 0);
+			    mapping[13] = Color.rgb(204, 128, 0);
+			    mapping[14] = Color.rgb(153, 87, 0);
+			    mapping[15] = Color.rgb(106, 52, 3);
+			    
+			    int n = iterationcount % 16;
+				
+			    color = mapping[n];
+			    
 				break;
 			default:
 				color = Color.rgb(255, 255, 255);
@@ -220,7 +247,7 @@ abstract class Menge
 		{
 			z = z.square().addition(c);
 
-			if (z.getAbsoluteValue() > 2)
+			if (z.getAbsoluteValue() > 1000000)
 			{
 //				System.out.println(z.getAbsoluteValue() - maxIterations);
 				// System.out.println("divergiert");
