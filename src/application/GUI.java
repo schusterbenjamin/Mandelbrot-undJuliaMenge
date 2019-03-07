@@ -67,10 +67,12 @@ public class GUI extends Group {
 
 		scene.widthProperty().addListener((obs, oldVal, newVal) -> {
 			setGUIonSpot();
+			renderBoth();
 		});
 
 		scene.heightProperty().addListener((obs, oldVal, newVal) -> {
 			setGUIonSpot();
+			renderBoth();
 		});
 
 		Dimension screenSizeFromAWT = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -264,8 +266,8 @@ public class GUI extends Group {
 
 				if (mandelImageView.isHover()) {
 
-					double x = (((event.getX() - 150) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
-					double y = (((event.getY() - 150) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
+					double x = (((event.getX() - Menge.getImageWidth() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
+					double y = -(((event.getY() - Menge.getImageHeight() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
 
 					juliaRealPartOfNumber.setText(x + "");
 					juliaImaginaryPartOfNumber.setText(y + "");
@@ -453,6 +455,12 @@ public class GUI extends Group {
 	}
 	
 	private void renderMandelbrot() {
+		mandelbrotMenge.renderMandelbrot();
+		waitabit();
+	}
+	
+	private void renderBoth() {
+		juliaMenge.renderJulia();
 		mandelbrotMenge.renderMandelbrot();
 		waitabit();
 	}
