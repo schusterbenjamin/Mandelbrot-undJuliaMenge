@@ -20,6 +20,7 @@ abstract class Menge
 	double zoom;
 	double zoomChangeFactor;
 	int maxIterations;
+	int zoomSetOffChangeDivisor;
 
 	public Menge(GUI g)
 	{
@@ -31,6 +32,7 @@ abstract class Menge
 		zoom = 1;
 		zoomChangeFactor = 2;
 		maxIterations = 1000;
+		zoomSetOffChangeDivisor = 1;
 	}
 
 	static int imageWidth = 300, imageHeight = 300;
@@ -69,14 +71,14 @@ abstract class Menge
 
 	}
 
-	public void moveXSetOffUp()
+	public void moveYSetOffUp()
 	{
 
 		ySetOff -= moveSpeed * zoom;
 
 	}
 
-	public void moveXSetOffDown()
+	public void moveYSetOffDown()
 	{
 
 		ySetOff += moveSpeed * zoom;
@@ -142,6 +144,49 @@ abstract class Menge
 		imageHeight = h;
 	}
 
+	public void zoomToMouse(Point mouseToNode, double deltaY)
+	{
+
+		int xMouseSetOff = (int) (mouseToNode.getX() / zoomSetOffChangeDivisor * zoom);
+		int yMouseSetOff = (int) (mouseToNode.getY() / zoomSetOffChangeDivisor * zoom);
+
+		if (deltaY > 0)
+		{
+			zoom /= zoomChangeFactor;
+		}
+		else
+		{
+			xMouseSetOff *= -1;
+			yMouseSetOff *= -1;
+			zoom *= zoomChangeFactor;
+		}
+
+		for (int i = 0; i < Math.abs(xMouseSetOff); i++)
+		{
+			if (xMouseSetOff > 0)
+			{
+				moveXSetOffRight();
+			}
+			else
+			{
+				moveXSetOffLeft();
+			}
+		}
+
+		for (int i = 0; i < Math.abs(yMouseSetOff); i++)
+		{
+			if (ySetOff > 0)
+			{
+				moveYSetOffUp();
+			}
+			else
+			{
+				moveYSetOffDown();
+			}
+		}
+
+	}
+
 	protected Color getColorFromIterations(int iterationcount, String clr, Point zn)
 	{
 
@@ -201,9 +246,9 @@ abstract class Menge
 
 				KomplexeZahl test = new KomplexeZahl(zn.getX(), zn.getY());
 
-				double smooth = iterationcount + 1 - Math.log(Math.log(test.getAbsoluteValue()))/Math.log(2);
-				//Yayyyy
-				color = Color.hsb(0.95f + 10 * smooth ,0.6f,1.0f);
+				double smooth = iterationcount + 1 - Math.log(Math.log(test.getAbsoluteValue())) / Math.log(2);
+				// Yayyyy
+				color = Color.hsb(0.95f + 10 * smooth, 0.6f, 1.0f);
 				break;
 			default:
 				color = Color.rgb(255, 255, 255);
@@ -213,7 +258,7 @@ abstract class Menge
 		return color;
 
 	}
-	
+
 	public Color calculateColorForKomplexNumbers(KomplexeZahl z, KomplexeZahl c, boolean mandel)
 	{
 		for (int i = 0; i <= maxIterations; i++)
@@ -222,7 +267,7 @@ abstract class Menge
 
 			if (z.getAbsoluteValue() > 2)
 			{
-//				System.out.println(z.getAbsoluteValue() - maxIterations);
+				// System.out.println(z.getAbsoluteValue() - maxIterations);
 				// System.out.println("divergiert");
 				Point zn = new Point();
 				zn.setLocation(z.getReal(), z.getImaginary());

@@ -1,5 +1,9 @@
 package application;
 
+
+
+import java.awt.Point;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -168,10 +172,13 @@ public class MainJuliaMandelbrotMenge extends Application
 		scene.setOnScroll((ScrollEvent event) ->
 		{
 
+			Point mouseToScene = new Point();
+			mouseToScene.setLocation(event.getSceneX(), event.getSceneY());
+			
 			if (gui.mandelImageView.isHover())
 			{
-
-				mandelbrotMenge.moveZoom(event.getDeltaY());
+				Point mouseToNode = gui.getMouseRelativeToTheMiddleOfMandelbrotImageView(mouseToScene);
+				mandelbrotMenge.zoomToMouse(mouseToNode, event.getDeltaY());
 				renderMandelbrot();
 			}
 
@@ -184,6 +191,8 @@ public class MainJuliaMandelbrotMenge extends Application
 		});
 
 	}
+	
+	
 
 	private void setKeyListener()
 	{
@@ -215,12 +224,12 @@ public class MainJuliaMandelbrotMenge extends Application
 
 					if (e.getCode() == KeyCode.W)
 					{
-						mandelbrotMenge.moveXSetOffUp();
+						mandelbrotMenge.moveYSetOffUp();
 					}
 
 					if (e.getCode() == KeyCode.S)
 					{
-						mandelbrotMenge.moveXSetOffDown();
+						mandelbrotMenge.moveYSetOffDown();
 					}
 
 					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
@@ -242,12 +251,12 @@ public class MainJuliaMandelbrotMenge extends Application
 
 					if (e.getCode() == KeyCode.W)
 					{
-						juliaMenge.moveXSetOffUp();
+						juliaMenge.moveYSetOffUp();
 					}
 
 					if (e.getCode() == KeyCode.S)
 					{
-						juliaMenge.moveXSetOffDown();
+						juliaMenge.moveYSetOffDown();
 					}
 
 					renderJulia();
