@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class ColorMap
 {
-	int colorMapLength = 60;
+	int colorMapLength = 90;
 	Color[] colorMap = new Color[colorMapLength];
 
 	public ColorMap(ArrayList<Color> colorList)
@@ -48,12 +48,11 @@ public class ColorMap
 		{
 			toMap[i * numberOfIndexesPerStep] = givenValues[i];
 
-
 			int difference = givenValues[i + 1] - givenValues[i];
 			int differencePerIndex = difference / numberOfIndexesPerStep;
 //			System.out.println(differencePerIndex);
 
-			for (int k = i * numberOfIndexesPerStep + 1; k < toMap.length; k++)
+			for (int k = i * numberOfIndexesPerStep + 1; k < (i + 1) * numberOfIndexesPerStep; k++)
 			{
 				toMap[k] = toMap[k - 1] + differencePerIndex;
 //				System.out.println(toMap[k]);

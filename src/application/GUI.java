@@ -511,20 +511,20 @@ public class GUI extends Group
 	private void renderJulia()
 	{
 		juliaMenge.renderJulia();
-		waitabit();
+//		waitabit();
 	}
 
 	private void renderMandelbrot()
 	{
 		mandelbrotMenge.renderMandelbrot();
-		waitabit();
+//		waitabit();
 	}
 
 	private void renderBoth()
 	{
 		juliaMenge.renderJulia();
 		mandelbrotMenge.renderMandelbrot();
-		waitabit();
+//		waitabit();
 	}
 
 	private void waitabit()
