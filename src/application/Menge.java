@@ -13,8 +13,7 @@ import javafx.stage.DirectoryChooser;
 import utils.ColorMap;
 import utils.KomplexeZahl;
 
-abstract class Menge
-{
+abstract class Menge {
 
 	GUI gui;
 
@@ -23,11 +22,13 @@ abstract class Menge
 	double zoom;
 	double zoomChangeFactor;
 	int maxIterations;
-	
+  
 	Color[] mapping;
 
-	public Menge(GUI g)
-	{
+	int zoomSetOffChangeDivisor;
+
+
+	public Menge(GUI g) {
 		gui = g;
 
 		xSetOff = 0;
@@ -36,7 +37,7 @@ abstract class Menge
 		zoom = 1;
 		zoomChangeFactor = 2;
 		maxIterations = 1000;
-		
+    
 //		Test!!
 		
 		ArrayList<Color> colorMapList = new ArrayList<Color>();
@@ -59,150 +60,163 @@ abstract class Menge
 	    colorMapList.add(Color.rgb(106, 52, 3));
 		
 		mapping = new ColorMap(colorMapList).getColorMap();
+
+		zoomSetOffChangeDivisor = 5;
+
 	}
 
 	static int imageWidth = 300, imageHeight = 300;
 
-	public double getxSetOff()
-	{
+	public double getxSetOff() {
 		return xSetOff;
 	}
 
-	public void setxSetOff(double xSetOff)
-	{
+	public void setxSetOff(double xSetOff) {
 		this.xSetOff = xSetOff;
 	}
 
-	public double getySetOff()
-	{
+	public double getySetOff() {
 		return ySetOff;
 	}
 
-	public void setySetOff(double ySetOff)
-	{
+	public void setySetOff(double ySetOff) {
 		this.ySetOff = ySetOff;
 	}
 
-	public void moveXSetOffLeft()
-	{
+	public void moveXSetOffLeft() {
 
 		xSetOff -= moveSpeed * zoom;
 
 	}
 
-	public void moveXSetOffRight()
-	{
+	public void moveXSetOffRight() {
 
 		xSetOff += moveSpeed * zoom;
 
 	}
 
-	public void moveXSetOffUp()
-	{
-
+	public void moveYSetOffUp() {
+		
 		ySetOff -= moveSpeed * zoom;
 
 	}
 
-	public void moveXSetOffDown()
-	{
-
+	public void moveYSetOffDown() {
+		
 		ySetOff += moveSpeed * zoom;
 
 	}
 
-	public void moveZoom(double deltaY)
-	{
-
-		if (deltaY > 0)
-		{
+	public void moveZoom(double deltaY) {
+		if (deltaY > 0) {
 			zoom /= zoomChangeFactor;
-		}
-		else
-		{
+		} else {
 			zoom *= zoomChangeFactor;
 		}
 	}
 
-	public void setZoom(double zoom)
-	{
+	public void setZoom(double zoom) {
 		this.zoom = zoom;
 	}
 
-	public double getZoom()
-	{
+	public double getZoom() {
 		return zoom;
 	}
 
-	public void setMaxIterations(int max)
-	{
+	public void setMaxIterations(int max) {
 		maxIterations = max;
 	}
 
-	public int getMaxIterations()
-	{
+	public int getMaxIterations() {
 		return maxIterations;
 	}
 
-	public static int getImageWidth()
-	{
+	public static int getImageWidth() {
 		return imageWidth;
 	}
 
-	public static void setImageWidth(int w)
-	{
+	public static void setImageWidth(int w) {
 		imageWidth = w;
 	}
 
-	public static int getImageHeight()
-	{
+	public static int getImageHeight() {
 		return imageHeight;
 	}
 
-	public static void setImageHeight(int h)
-	{
+	public static void setImageHeight(int h) {
 		imageHeight = h;
 	}
 
-	public static void setImageSize(int w, int h)
-	{
+	public static void setImageSize(int w, int h) {
 		imageWidth = w;
 		imageHeight = h;
 	}
 
-	protected Color getColorFromIterations(int iterationcount, String clr, Point zn)
-	{
+	public void zoomToMouse(Point mouseToNode, double deltaY) {
+
+		int xMouseSetOff = (int) (mouseToNode.getX() / zoomSetOffChangeDivisor);
+		int yMouseSetOff = (int) (mouseToNode.getY() / zoomSetOffChangeDivisor);
+
+		if (deltaY > 0) {
+			zoom /= zoomChangeFactor;
+
+		} else {
+			xMouseSetOff *= -1;
+			yMouseSetOff *= -1;
+		}
+
+		for (int i = 0; i < Math.abs(xMouseSetOff); i++) {
+			if (xMouseSetOff > 0) {
+				moveXSetOffRight();
+			} else {
+				moveXSetOffLeft();
+			}
+		}
+
+		for (int i = 0; i < Math.abs(yMouseSetOff); i++) {
+			if (yMouseSetOff > 0) {
+				moveYSetOffUp();
+			} else {
+				moveYSetOffDown();
+			}
+		}
+
+		if (deltaY < 0) {
+			zoom *= zoomChangeFactor;
+		}
+
+	}
+
+	protected Color getColorFromIterations(int iterationcount, String clr, Point zn) {
 
 		Color color = null;
 
 		int iterationcountForOldMappings = iterationcount * iterationcount * iterationcount / 5;
-		if (iterationcountForOldMappings > 255)
-		{
+		if (iterationcountForOldMappings > 255) {
 			iterationcountForOldMappings = 255;
 		}
-		if (iterationcountForOldMappings < 0)
-		{
+		if (iterationcountForOldMappings < 0) {
 			iterationcountForOldMappings = 0;
 		}
 
-		switch (clr)
-		{
-			case "black & white":
-				color = Color.rgb(255, 255, 255);
-				break;
-			case "gray":
-				color = Color.rgb(iterationcountForOldMappings, iterationcountForOldMappings, iterationcountForOldMappings);
-				break;
-			case "red":
-				color = Color.rgb(iterationcountForOldMappings, 0, 0);
-				break;
-			case "blue":
-				color = Color.rgb(0, 0, iterationcountForOldMappings);
-				break;
-			case "green":
-				color = Color.rgb(0, iterationcountForOldMappings, 0);
-				break;
-			case "crazy":
+		switch (clr) {
+		case "black & white":
+			color = Color.rgb(255, 255, 255);
+			break;
+		case "gray":
+			color = Color.rgb(iterationcountForOldMappings, iterationcountForOldMappings, iterationcountForOldMappings);
+			break;
+		case "red":
+			color = Color.rgb(iterationcountForOldMappings, 0, 0);
+			break;
+		case "blue":
+			color = Color.rgb(0, 0, iterationcountForOldMappings);
+			break;
+		case "green":
+			color = Color.rgb(0, iterationcountForOldMappings, 0);
+			break;
+	
+		case "crazy":
 				int crazycount = (int) (Math.random() * 100);
 
 				if (crazycount % 3 == 0)
@@ -268,25 +282,20 @@ abstract class Menge
 		return color;
 
 	}
-	
-	public Color calculateColorForKomplexNumbers(KomplexeZahl z, KomplexeZahl c, boolean mandel)
-	{
-		for (int i = 0; i <= maxIterations; i++)
-		{
+
+	public Color calculateColorForKomplexNumbers(KomplexeZahl z, KomplexeZahl c, boolean mandel) {
+		for (int i = 0; i <= maxIterations; i++) {
 			z = z.square().addition(c);
 
-			if (z.getAbsoluteValue() > 1000000)
-			{
-//				System.out.println(z.getAbsoluteValue() - maxIterations);
+
+			if (z.getAbsoluteValue() > 2) {
+				// System.out.println(z.getAbsoluteValue() - maxIterations);
 				// System.out.println("divergiert");
 				Point zn = new Point();
 				zn.setLocation(z.getReal(), z.getImaginary());
-				if (mandel)
-				{
+				if (mandel) {
 					return getColorFromIterations(i, gui.getMandelColor(), zn);
-				}
-				else
-				{
+				} else {
 					return getColorFromIterations(i, gui.getJuliaColor(), zn);
 				}
 			}
@@ -295,18 +304,14 @@ abstract class Menge
 		return Color.BLACK;
 	}
 
-	protected void saveImage(BufferedImage imageToSave, String name)
-	{
+	protected void saveImage(BufferedImage imageToSave, String name) {
 
 		String pfad = new DirectoryChooser().showDialog(null).toString();
 		File Mandelbrot = new File(pfad + name);
 
-		try
-		{
+		try {
 			ImageIO.write(imageToSave, "jpg", Mandelbrot);
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 

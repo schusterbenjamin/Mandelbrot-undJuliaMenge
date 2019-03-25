@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -21,7 +22,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class GUI extends Group {
+public class GUI extends Group
+{
 
 	Stage stage;
 	Scene scene;
@@ -56,7 +58,8 @@ public class GUI extends Group {
 	Slider rotateSpeed;
 	Slider rotateRadius;
 
-	public GUI(Scene scene, Stage stage) {
+	public GUI(Scene scene, Stage stage)
+	{
 
 		this.stage = stage;
 		this.scene = scene;
@@ -65,12 +68,14 @@ public class GUI extends Group {
 
 		createGUI();
 
-		scene.widthProperty().addListener((obs, oldVal, newVal) -> {
+		scene.widthProperty().addListener((obs, oldVal, newVal) ->
+		{
 			setGUIonSpot();
 			renderBoth();
 		});
 
-		scene.heightProperty().addListener((obs, oldVal, newVal) -> {
+		scene.heightProperty().addListener((obs, oldVal, newVal) ->
+		{
 			setGUIonSpot();
 			renderBoth();
 		});
@@ -81,13 +86,13 @@ public class GUI extends Group {
 
 	}
 
-	private void setGUIonSpot() {
+	private void setGUIonSpot()
+	{
 
 		double sceneWidth = scene.getWidth();
 		double sceneHeight = scene.getHeight();
 
-		
-//Mandelbrotstuff
+		// Mandelbrotstuff
 		mandelbrotName.setTranslateX(sceneWidth * 0.05);
 		mandelbrotName.setTranslateY(sceneHeight * 0.1);
 
@@ -107,14 +112,14 @@ public class GUI extends Group {
 
 		mandelImageView.setTranslateX(sceneWidth * 0.05);
 		mandelImageView.setTranslateY(sceneHeight * 0.45);
-		
+
 		mandelReset.setTranslateX(sceneWidth * 0.3);
-		mandelReset.setTranslateY(sceneHeight * 0.95); 
-		
-		int size = (int)(Math.min(sceneWidth * .5, sceneHeight * .5));
+		mandelReset.setTranslateY(sceneHeight * 0.95);
+
+		int size = (int) (Math.min(sceneWidth * .5, sceneHeight * .5));
 		Menge.setImageSize(size, size);
-		
-//Julia Stuff
+
+		// Julia Stuff
 		juliaName.setTranslateX(sceneWidth * 0.55);
 		juliaName.setTranslateY(sceneHeight * 0.1);
 
@@ -140,14 +145,11 @@ public class GUI extends Group {
 
 		juliaImageView.setTranslateX(sceneWidth * 0.55);
 		juliaImageView.setTranslateY(sceneHeight * 0.45);
-		
-		juliaReset.setTranslateX(sceneWidth  * 0.8);
+
+		juliaReset.setTranslateX(sceneWidth * 0.8);
 		juliaReset.setTranslateY(sceneHeight * 0.95);
-		
-		
-		
-		
-//Rotieren stuff
+
+		// Rotieren stuff
 		rotate.setText("Rotieren");
 		rotate.setTranslateX(sceneWidth * 0.5);
 		rotate.setTranslateY(sceneHeight * 0.3);
@@ -161,13 +163,14 @@ public class GUI extends Group {
 		rotateRadius.setTranslateY(sceneHeight * 0.4);
 		rotateRadius.setPrefWidth(sceneWidth * 0.4);
 
-		//Easter Egg
+		// Easter Egg
 		easterEggButton.setTranslateX(sceneWidth * 0.3);
 		easterEggButton.setTranslateY(sceneHeight * 0.15);
 		easterEggButton.setPrefSize(sceneWidth * 0.1, sceneHeight * 0.1);
 	}
 
-	private void createMandelAndJuliaButtons() {
+	private void createMandelAndJuliaButtons()
+	{
 
 		mandelSave = new Button("save");
 		mandelSave.setId("btn");
@@ -176,7 +179,7 @@ public class GUI extends Group {
 		mandelRender = new Button("Render");
 		mandelRender.setId("btn");
 		add(mandelRender);
-		
+
 		mandelRender.setOnMouseClicked(new EventHandler<MouseEvent>()
 		{
 			@Override
@@ -202,7 +205,7 @@ public class GUI extends Group {
 		juliaRender = new Button("Render");
 		juliaRender.setId("btn");
 		add(juliaRender);
-		
+
 		juliaRender.setOnMouseClicked(new EventHandler<MouseEvent>()
 		{
 			@Override
@@ -224,7 +227,8 @@ public class GUI extends Group {
 
 	}
 
-	private void createNameTexts() {
+	private void createNameTexts()
+	{
 
 		mandelbrotName = new Text("Mandelbrotmenge");
 		mandelbrotName.setId("Names");
@@ -249,7 +253,8 @@ public class GUI extends Group {
 		add(juliaColor);
 	}
 
-	private void createAllForComplexNumber() {
+	private void createAllForComplexNumber()
+	{
 		juliaRealPartOfNumber = new TextField("Real Part");
 		juliaRealPartOfNumber.setText("-1");
 		add(juliaRealPartOfNumber);
@@ -259,12 +264,16 @@ public class GUI extends Group {
 		add(juliaImaginaryPartOfNumber);
 	}
 
-	private void createImageViews() {
+	private void createImageViews()
+	{
 		mandelImageView = new ImageView();
-		mandelImageView.setOnMouseClicked((MouseEvent event) -> {
-			if (!rotatebool) {
+		mandelImageView.setOnMouseClicked((MouseEvent event) ->
+		{
+			if (!rotatebool)
+			{
 
-				if (mandelImageView.isHover()) {
+				if (mandelImageView.isHover())
+				{
 
 					double x = (((event.getX() - Menge.getImageWidth() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
 					double y = -(((event.getY() - Menge.getImageHeight() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
@@ -273,16 +282,20 @@ public class GUI extends Group {
 					juliaImaginaryPartOfNumber.setText(y + "");
 
 					renderJulia();
-					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
+					// rendert Mandelbrotmenge mit rotem Punkt bei dem c fÃ¼r die Juliamenge
 					renderMandelbrot();
 				}
 			}
-			if (event.getClickCount() == 2) {
-				if (!mandelIsFullscreen) {
+			if (event.getClickCount() == 2)
+			{
+				if (!mandelIsFullscreen)
+				{
 					removeEverythingFromGroup();
 					setNodeFullscreen(mandelImageView);
 					mandelIsFullscreen = true;
-				} else {
+				}
+				else
+				{
 					addEverythingToGroup();
 					setFromFullscreenBackSmall();
 					mandelIsFullscreen = false;
@@ -292,13 +305,18 @@ public class GUI extends Group {
 		add(mandelImageView);
 
 		juliaImageView = new ImageView();
-		juliaImageView.setOnMouseClicked((MouseEvent event) -> {
-			if (event.getClickCount() == 2) {
-				if (!juliaIsFullscreen) {
+		juliaImageView.setOnMouseClicked((MouseEvent event) ->
+		{
+			if (event.getClickCount() == 2)
+			{
+				if (!juliaIsFullscreen)
+				{
 					removeEverythingFromGroup();
 					setNodeFullscreen(juliaImageView);
 					juliaIsFullscreen = true;
-				} else {
+				}
+				else
+				{
 					addEverythingToGroup();
 					setFromFullscreenBackSmall();
 					juliaIsFullscreen = false;
@@ -308,7 +326,8 @@ public class GUI extends Group {
 		add(juliaImageView);
 	}
 
-	private void createRotateCheckBoxWithSliders() {
+	private void createRotateCheckBoxWithSliders()
+	{
 
 		rotate = new CheckBox();
 		add(rotate);
@@ -321,9 +340,11 @@ public class GUI extends Group {
 
 	}
 
-	public void createResetButtons() {
+	public void createResetButtons()
+	{
 		mandelReset = new Button("Reset");
-		mandelReset.setOnMouseClicked((MouseEvent event) -> {
+		mandelReset.setOnMouseClicked((MouseEvent event) ->
+		{
 			mandelbrotMenge.setxSetOff(0);
 			mandelbrotMenge.setySetOff(0);
 			mandelbrotMenge.setZoom(1);
@@ -333,7 +354,8 @@ public class GUI extends Group {
 		add(mandelReset);
 
 		juliaReset = new Button("Reset");
-		juliaReset.setOnMouseClicked((MouseEvent event) -> {
+		juliaReset.setOnMouseClicked((MouseEvent event) ->
+		{
 			juliaMenge.setxSetOff(0);
 			juliaMenge.setySetOff(0);
 			juliaMenge.setZoom(1);
@@ -345,18 +367,23 @@ public class GUI extends Group {
 
 	boolean herrSchroettinger = false;
 
-	private void createEasterEggButton() {
+	private void createEasterEggButton()
+	{
 		easterEggButton = new Button();
 		easterEggButton.setId("schrbtn");
 		add(easterEggButton);
 
-		easterEggButton.setOnMouseClicked((MouseEvent event) -> {
+		easterEggButton.setOnMouseClicked((MouseEvent event) ->
+		{
 
-			if (!herrSchroettinger) {
+			if (!herrSchroettinger)
+			{
 				scene.getStylesheets().clear();
 				scene.getStylesheets().add(getClass().getResource("application1.css").toExternalForm());
 				herrSchroettinger = true;
-			} else {
+			}
+			else
+			{
 				scene.getStylesheets().clear();
 				scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				herrSchroettinger = false;
@@ -365,7 +392,8 @@ public class GUI extends Group {
 		});
 	}
 
-	private void createGUI() {
+	private void createGUI()
+	{
 		createMandelAndJuliaButtons();
 		createNameTexts();
 		createColorDropLists();
@@ -379,25 +407,29 @@ public class GUI extends Group {
 		setGUIonSpot();
 	}
 
-	public void setNodeFullscreen(Node node) {
+	public void setNodeFullscreen(Node node)
+	{
 		stage.setFullScreen(true);
 		getChildren().add(node);
 		node.setTranslateX(0);
 		node.setTranslateY(0);
-		
+
 		Menge.setImageSize(screenWidth, screenHeight);
-		
-		if (node == mandelImageView) {
+
+		if (node == mandelImageView)
+		{
 			mandelbrotMenge.setMaxIterations(mandelbrotMenge.getMaxIterations() / 10);
 			renderMandelbrot();
 		}
-		if (node == juliaImageView) {
+		if (node == juliaImageView)
+		{
 			juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() / 10);
 			renderJulia();
 		}
 	}
 
-	public void setFromFullscreenBackSmall() {
+	public void setFromFullscreenBackSmall()
+	{
 		stage.setFullScreen(false);
 		getChildren().clear();
 		addEverythingToGroup();
@@ -406,66 +438,80 @@ public class GUI extends Group {
 		renderMandelbrot();
 		juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() * 10);
 		renderJulia();
-		
-		int size = (int)(Math.min(scene.getWidth() * .5, scene.getHeight() * .5));
+
+		int size = (int) (Math.min(scene.getWidth() * .5, scene.getHeight() * .5));
 		Menge.setImageSize(size, size);
 	}
 
-	public void removeEverythingFromGroup() {
+	public void removeEverythingFromGroup()
+	{
 		getChildren().clear();
 	}
 
-	public void addEverythingToGroup() {
-		for (Node node : allNodes) {
-			if (!getChildren().contains(node)) {
+	public void addEverythingToGroup()
+	{
+		for (Node node : allNodes)
+		{
+			if (!getChildren().contains(node))
+			{
 				getChildren().add(node);
 			}
 		}
 	}
 
-	public void add(Node node) {
+	public void add(Node node)
+	{
 		getChildren().add(node);
 		allNodes.add(node);
 	}
 
-	public void setMandelbrotImage(WritableImage image) {
+	public void setMandelbrotImage(WritableImage image)
+	{
 		mandelImageView.setImage(image);
 	}
 
-	public void setJuliaImage(WritableImage image) {
+	public void setJuliaImage(WritableImage image)
+	{
 		juliaImageView.setImage(image);
 	}
 
-	public String getJuliaColor() {
+	public String getJuliaColor()
+	{
 		return juliaColor.getValue();
 	}
 
-	public String getMandelColor() {
+	public String getMandelColor()
+	{
 		return mandelColor.getValue();
 	}
 
-	public void setMandelbrotmengeAndJuliamenge(Mandelbrotmenge mandel, Juliamenge julia) {
+	public void setMandelbrotmengeAndJuliamenge(Mandelbrotmenge mandel, Juliamenge julia)
+	{
 		this.mandelbrotMenge = mandel;
 		this.juliaMenge = julia;
 	}
-	
-	private void renderJulia() {
+
+	private void renderJulia()
+	{
 		juliaMenge.renderJulia();
 		waitabit();
 	}
-	
-	private void renderMandelbrot() {
+
+	private void renderMandelbrot()
+	{
 		mandelbrotMenge.renderMandelbrot();
 		waitabit();
 	}
-	
-	private void renderBoth() {
+
+	private void renderBoth()
+	{
 		juliaMenge.renderJulia();
 		mandelbrotMenge.renderMandelbrot();
 		waitabit();
 	}
-	
-	private void waitabit() {
+
+	private void waitabit()
+	{
 		try
 		{
 			Thread.sleep(150);
@@ -475,6 +521,26 @@ public class GUI extends Group {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public Point getMouseRelativeToTheMiddleOfMandelbrotImageView(Point mouseToScene)
+	{
+		return getMouseRelatveToTheMiddleOfNode(mouseToScene, mandelImageView);
+	}
+
+	private Point getMouseRelatveToTheMiddleOfNode(Point mouseToScene, Node node)
+	{
+		Point p = mouseToScene;
+
+		int x = (int) (p.getX() - node.getTranslateX());
+		int y = (int) (p.getY() - node.getTranslateY());
+
+		x -= Menge.imageWidth / 2;
+		y -= Menge.imageHeight / 2;
+		y *= -1;
+
+		p.setLocation(x, y);
+
+		return p;
+	}
 
 }
