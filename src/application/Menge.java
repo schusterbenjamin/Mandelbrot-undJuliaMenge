@@ -64,13 +64,13 @@ abstract class Menge {
 	}
 
 	public void moveYSetOffUp() {
-
+		
 		ySetOff -= moveSpeed * zoom;
 
 	}
 
 	public void moveYSetOffDown() {
-
+		
 		ySetOff += moveSpeed * zoom;
 
 	}
@@ -142,7 +142,7 @@ abstract class Menge {
 		}
 
 		for (int i = 0; i < Math.abs(yMouseSetOff); i++) {
-			if (ySetOff > 0) {
+			if (yMouseSetOff > 0) {
 				moveYSetOffUp();
 			} else {
 				moveYSetOffDown();
