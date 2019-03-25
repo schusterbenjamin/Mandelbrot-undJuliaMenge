@@ -239,9 +239,9 @@ public class GUI extends Group
 		add(juliaName);
 	}
 
-	private void createColorDropLists()
-	{
-		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy", "black & white", "test", "testTwo", "gray");
+	private void createColorDropLists() {
+		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy",
+				"black & white", "mandala", "crane", "gray", "test");
 		mandelColor = new ComboBox<String>(options);
 		mandelColor.setValue("white & black");
 		mandelColor.setId("btn");
@@ -282,7 +282,7 @@ public class GUI extends Group
 					juliaImaginaryPartOfNumber.setText(y + "");
 
 					renderJulia();
-					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
+					// rendert Mandelbrotmenge mit rotem Punkt bei dem c fÃ¼r die Juliamenge
 					renderMandelbrot();
 				}
 			}
