@@ -5,8 +5,11 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -18,9 +21,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class GUI extends Group
 {
@@ -57,6 +64,9 @@ public class GUI extends Group
 	boolean rotatebool = false;
 	Slider rotateSpeed;
 	Slider rotateRadius;
+	
+	double circle = 0;
+	double rotateValue = 0.3;
 
 	public GUI(Scene scene, Stage stage)
 	{
@@ -239,9 +249,9 @@ public class GUI extends Group
 		add(juliaName);
 	}
 
-	private void createColorDropLists() {
-		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy",
-				"black & white", "mandala", "crane", "gray", "test");
+	private void createColorDropLists()
+	{
+		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy", "black & white", "mandala", "crane", "gray", "test");
 		mandelColor = new ComboBox<String>(options);
 		mandelColor.setValue("white & black");
 		mandelColor.setId("btn");
@@ -403,6 +413,11 @@ public class GUI extends Group
 		createResetButtons();
 
 		createEasterEggButton();
+		
+		setKeyListener();
+		setScrollListener();
+		setMouseListener();
+		setRotateTimeline();
 
 		setGUIonSpot();
 	}
@@ -489,25 +504,27 @@ public class GUI extends Group
 	{
 		this.mandelbrotMenge = mandel;
 		this.juliaMenge = julia;
+		
+		renderBoth();
 	}
 
 	private void renderJulia()
 	{
 		juliaMenge.renderJulia();
-		waitabit();
+//		waitabit();
 	}
 
 	private void renderMandelbrot()
 	{
 		mandelbrotMenge.renderMandelbrot();
-		waitabit();
+//		waitabit();
 	}
 
 	private void renderBoth()
 	{
 		juliaMenge.renderJulia();
 		mandelbrotMenge.renderMandelbrot();
-		waitabit();
+//		waitabit();
 	}
 
 	private void waitabit()
@@ -527,6 +544,11 @@ public class GUI extends Group
 		return getMouseRelatveToTheMiddleOfNode(mouseToScene, mandelImageView);
 	}
 
+	public Point getMouseRelativeToTheMiddleOfJuliaImageView(Point mouseToScene)
+	{
+		return getMouseRelatveToTheMiddleOfNode(mouseToScene, juliaImageView);
+	}
+
 	private Point getMouseRelatveToTheMiddleOfNode(Point mouseToScene, Node node)
 	{
 		Point p = mouseToScene;
@@ -542,5 +564,204 @@ public class GUI extends Group
 
 		return p;
 	}
+	
+	
+	private void setRotateTimeline()
+	{
 
+		Timeline rotateTimer = new Timeline(new KeyFrame(Duration.millis(50), new EventHandler<ActionEvent>()
+		{
+
+			@Override
+			public void handle(ActionEvent arg0)
+			{
+
+				if (rotate.isSelected())
+				{
+					rotatebool = true;
+//					juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() / 10);
+//					mandelbrotMenge.setMaxIterations(mandelbrotMenge.getMaxIterations() / 10);
+				}
+				else
+				{
+					rotatebool = false;
+					if (!mandelIsFullscreen && !juliaIsFullscreen)
+					{
+//						juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() * 10);
+//						mandelbrotMenge.setMaxIterations(mandelbrotMenge.getMaxIterations() * 10);
+					}
+				}
+
+				if (rotatebool)
+				{
+					circle += (Math.PI / (101 - (rotateSpeed.getValue())));
+
+					if (circle > 2 * Math.PI)
+					{
+						circle = (-2 * Math.PI);
+					}
+
+					double rotatex = Math.cos(circle) * ((double) (rotateRadius.getValue()) / 100);
+					double rotatey = -Math.sin(circle) * ((double) (rotateRadius.getValue()) / 100);
+
+					juliaRealPartOfNumber.setText("" + rotatex);
+					juliaImaginaryPartOfNumber.setText("" + rotatey);
+
+					// if (rotateRadius.getValue() == 0 || rotateRadius.getValue() ==
+					// rotateRadius.getMax())
+					// {
+					// rotateValue *= -1;
+					// }
+					//
+					// rotateRadius.setValue(rotateRadius.getValue() - rotateValue);
+
+					renderJulia();
+
+					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
+					renderMandelbrot();
+				}
+
+			}
+
+		}));
+		rotateTimer.setCycleCount(Timeline.INDEFINITE);
+		rotateTimer.play();
+	}
+
+	private void setMouseListener()
+	{
+
+		// der Rest is in der GUI Klasse, jaa ich weiss is unübersichtlich....
+		mandelImageView.setOnMouseDragged((MouseEvent event) ->
+		{
+			getMousePosAndRenderBoth(event);
+
+		});
+
+	}
+
+	private void getMousePosAndRenderBoth(MouseEvent event)
+	{
+		if (!rotatebool)
+		{
+
+			if (mandelImageView.isHover())
+			{
+
+				double x = (((event.getX() - Menge.getImageWidth() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
+				double y = -(((event.getY() - Menge.getImageHeight() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
+
+				juliaRealPartOfNumber.setText(x + "");
+				juliaImaginaryPartOfNumber.setText(y + "");
+
+				renderJulia();
+				renderMandelbrot();
+			}
+		}
+	}
+
+	private void setScrollListener()
+	{
+
+		scene.setOnScroll((ScrollEvent event) ->
+		{
+
+			Point mouseToScene = new Point();
+			mouseToScene.setLocation(event.getSceneX(), event.getSceneY());
+			
+			if (mandelImageView.isHover())
+			{
+				Point mouseToNode = getMouseRelativeToTheMiddleOfMandelbrotImageView(mouseToScene);
+				mandelbrotMenge.zoomToMouse(mouseToNode, event.getDeltaY());
+				renderMandelbrot();
+			}
+
+			if (juliaImageView.isHover())
+			{
+
+				Point mouseToNode = getMouseRelativeToTheMiddleOfJuliaImageView(mouseToScene);
+				juliaMenge.zoomToMouse(mouseToNode, event.getDeltaY());
+				renderJulia();
+			}
+		});
+
+	}
+	
+	
+
+	private void setKeyListener()
+	{
+
+		scene.setOnKeyPressed(new EventHandler<KeyEvent>()
+		{
+
+			@Override
+			public void handle(KeyEvent e)
+			{
+
+				if (e.getCode() == KeyCode.ESCAPE)
+				{
+					setFromFullscreenBackSmall();
+				}
+
+				if (mandelImageView.isHover())
+				{
+
+					if (e.getCode() == KeyCode.A)
+					{
+						mandelbrotMenge.moveXSetOffLeft();
+					}
+
+					if (e.getCode() == KeyCode.D)
+					{
+						mandelbrotMenge.moveXSetOffRight();
+					}
+
+					if (e.getCode() == KeyCode.W)
+					{
+						mandelbrotMenge.moveYSetOffUp();
+					}
+
+					if (e.getCode() == KeyCode.S)
+					{
+						mandelbrotMenge.moveYSetOffDown();
+					}
+
+					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
+					renderMandelbrot();
+				}
+
+				if (juliaImageView.isHover())
+				{
+
+					if (e.getCode() == KeyCode.A)
+					{
+						juliaMenge.moveXSetOffLeft();
+					}
+
+					if (e.getCode() == KeyCode.D)
+					{
+						juliaMenge.moveXSetOffRight();
+					}
+
+					if (e.getCode() == KeyCode.W)
+					{
+						juliaMenge.moveYSetOffUp();
+					}
+
+					if (e.getCode() == KeyCode.S)
+					{
+						juliaMenge.moveYSetOffDown();
+					}
+
+					renderJulia();
+				}
+
+			}
+
+		});
+		;
+
+	}
+	
 }

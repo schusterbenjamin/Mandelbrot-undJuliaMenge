@@ -61,8 +61,6 @@ abstract class Menge {
 		
 		mapping = new ColorMap(colorMapList).getColorMap();
 
-		zoomSetOffChangeDivisor = 5;
-
 	}
 
 	static int imageWidth = 300, imageHeight = 300;
@@ -154,6 +152,8 @@ abstract class Menge {
 
 	public void zoomToMouse(Point mouseToNode, double deltaY) {
 
+		zoomSetOffChangeDivisor =  imageWidth / 60;
+		
 		int xMouseSetOff = (int) (mouseToNode.getX() / zoomSetOffChangeDivisor);
 		int yMouseSetOff = (int) (mouseToNode.getY() / zoomSetOffChangeDivisor);
 
