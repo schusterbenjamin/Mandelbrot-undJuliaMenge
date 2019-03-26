@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -19,15 +20,18 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import utils.ColorPicker;
 
 public class GUI extends Group
 {
@@ -65,9 +69,11 @@ public class GUI extends Group
 	boolean rotatebool = false;
 	Slider rotateSpeed;
 	Slider rotateRadius;
-	
+
 	double circle = 0;
 	double rotateValue = 0.3;
+
+	Button makeCustomColorMap;
 
 	public GUI(Scene scene, Stage stage)
 	{
@@ -174,10 +180,10 @@ public class GUI extends Group
 		rotateRadius.setTranslateY(sceneHeight * 0.4);
 		rotateRadius.setPrefWidth(sceneWidth * 0.4);
 
-		// Easter Egg
-		easterEggButton.setTranslateX(sceneWidth * 0.3);
-		easterEggButton.setTranslateY(sceneHeight * 0.15);
-		easterEggButton.setPrefSize(sceneWidth * 0.1, sceneHeight * 0.1);
+		// customColorMap
+		makeCustomColorMap.setTranslateX(sceneWidth * 0.3);
+		makeCustomColorMap.setTranslateY(sceneHeight * 0.15);
+		makeCustomColorMap.setPrefSize(sceneWidth * 0.1, sceneHeight * 0.1);
 	}
 
 	private void createMandelAndJuliaButtons()
@@ -252,7 +258,7 @@ public class GUI extends Group
 
 	private void createColorDropLists()
 	{
-		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy", "black & white", "mandala", "crane", "gray", "blue-orange", "test");
+		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy", "black & white", "mandala", "crane", "gray", "blue-orange", "test", "custom");
 		mandelColor = new ComboBox<String>(options);
 		mandelColor.setValue("white & black");
 		mandelColor.setId("btn");
@@ -341,11 +347,15 @@ public class GUI extends Group
 	{
 
 		rotate = new CheckBox();
-		rotate.setOnMouseClicked((MouseEvent e) ->{
-			if(!rotatebool) {
+		rotate.setOnMouseClicked((MouseEvent e) ->
+		{
+			if (!rotatebool)
+			{
 				rotatebool = true;
 				rotateTimer.play();
-			}else {
+			}
+			else
+			{
 				rotatebool = false;
 				rotateTimer.stop();
 			}
@@ -387,29 +397,75 @@ public class GUI extends Group
 
 	boolean herrSchroettinger = false;
 
-	private void createEasterEggButton()
+	private void createCustomColorMapButton()
 	{
-		easterEggButton = new Button();
-		easterEggButton.setId("schrbtn");
-		add(easterEggButton);
+		makeCustomColorMap = new Button("Make Map");
+		makeCustomColorMap.setId("btn");
 
-		easterEggButton.setOnMouseClicked((MouseEvent event) ->
+		// ColorPicker colorPicker = new ColorPicker();
+		// colorPicker.setOnAction((ActionEvent e) -> {
+		// System.out.println("hi there");
+		// });
+
+		makeCustomColorMap.setOnMouseClicked((MouseEvent e) ->
 		{
+			TextInputDialog dialog = new TextInputDialog("numberOfColors");
+			dialog.setTitle("Set Number of Colors");
+			dialog.setHeaderText("Please choose a number of Colors you wish");
+			dialog.setContentText("Please enter the number:");
 
-			if (!herrSchroettinger)
-			{
-				scene.getStylesheets().clear();
-				scene.getStylesheets().add(getClass().getResource("application1.css").toExternalForm());
-				herrSchroettinger = true;
-			}
-			else
-			{
-				scene.getStylesheets().clear();
-				scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-				herrSchroettinger = false;
-			}
+			// Traditional way to get the response value.
+			Optional<String> result = dialog.showAndWait();
 
+			if (result.isPresent())
+			{
+				try
+				{
+					int numberOfColors = Integer.parseInt(result.get());
+
+					dialog.setTitle("Color");
+					dialog.setHeaderText("Please give the color");
+					dialog.setContentText("Please enter the color:");
+
+					for (int i = 0; i < numberOfColors; i++)
+					{
+						ColorPicker d;
+						if (i != 0)
+						{
+							d = new ColorPicker(stage, this, false);
+						}
+						else
+						{
+							d = new ColorPicker(stage, this, true);
+						}
+
+						// result = dialog.showAndWait();
+						// String[] numberStrings = result.get().replaceAll(" ", "").split(",");
+						// Color c = Color.rgb(Integer.parseInt(numberStrings[0]), Integer.parseInt(numberStrings[1]), Integer.parseInt(numberStrings[2]));
+						// customColorList.add(c);
+					}
+
+				}
+				catch (Exception ef)
+				{
+					ef.printStackTrace();
+					System.out.println("Please give me a number! not something else!");
+				}
+			}
 		});
+		add(makeCustomColorMap);
+	}
+
+	ArrayList<Color> customColorList = new ArrayList<Color>();
+
+	public void addColorToCustomColorList(Color c, boolean last)
+	{
+		customColorList.add(c);
+		if (last)
+		{
+			Menge.setCustomMap(customColorList);
+			customColorList.clear();
+		}
 	}
 
 	private void createGUI()
@@ -422,8 +478,8 @@ public class GUI extends Group
 		createRotateCheckBoxWithSliders();
 		createResetButtons();
 
-		createEasterEggButton();
-		
+		createCustomColorMapButton();
+
 		setKeyListener();
 		setScrollListener();
 		setMouseListener();
@@ -514,27 +570,27 @@ public class GUI extends Group
 	{
 		this.mandelbrotMenge = mandel;
 		this.juliaMenge = julia;
-		
+
 		renderBoth();
 	}
 
 	private void renderJulia()
 	{
 		juliaMenge.renderJulia();
-//		waitabit();
+		// waitabit();
 	}
 
 	private void renderMandelbrot()
 	{
 		mandelbrotMenge.renderMandelbrot();
-//		waitabit();
+		// waitabit();
 	}
 
 	private void renderBoth()
 	{
 		juliaMenge.renderJulia();
 		mandelbrotMenge.renderMandelbrot();
-//		waitabit();
+		// waitabit();
 	}
 
 	private void waitabit()
@@ -574,8 +630,7 @@ public class GUI extends Group
 
 		return p;
 	}
-	
-	
+
 	private void setRotateTimeline()
 	{
 
@@ -586,32 +641,31 @@ public class GUI extends Group
 			public void handle(ActionEvent arg0)
 			{
 
-				
-					circle += (Math.PI / (101 - (rotateSpeed.getValue())));
+				circle += (Math.PI / (101 - (rotateSpeed.getValue())));
 
-					if (circle > 2 * Math.PI)
-					{
-						circle = (-2 * Math.PI);
-					}
+				if (circle > 2 * Math.PI)
+				{
+					circle = (-2 * Math.PI);
+				}
 
-					double rotatex = Math.cos(circle) * ((double) (rotateRadius.getValue()) / 100);
-					double rotatey = -Math.sin(circle) * ((double) (rotateRadius.getValue()) / 100);
+				double rotatex = Math.cos(circle) * ((double) (rotateRadius.getValue()) / 100);
+				double rotatey = -Math.sin(circle) * ((double) (rotateRadius.getValue()) / 100);
 
-					juliaRealPartOfNumber.setText("" + rotatex);
-					juliaImaginaryPartOfNumber.setText("" + rotatey);
+				juliaRealPartOfNumber.setText("" + rotatex);
+				juliaImaginaryPartOfNumber.setText("" + rotatey);
 
-					// if (rotateRadius.getValue() == 0 || rotateRadius.getValue() ==
-					// rotateRadius.getMax())
-					// {
-					// rotateValue *= -1;
-					// }
-					//
-					// rotateRadius.setValue(rotateRadius.getValue() - rotateValue);
+				// if (rotateRadius.getValue() == 0 || rotateRadius.getValue() ==
+				// rotateRadius.getMax())
+				// {
+				// rotateValue *= -1;
+				// }
+				//
+				// rotateRadius.setValue(rotateRadius.getValue() - rotateValue);
 
-					renderJulia();
+				renderJulia();
 
-					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
-					renderMandelbrot();
+				// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
+				renderMandelbrot();
 			}
 
 		}));
@@ -658,7 +712,7 @@ public class GUI extends Group
 
 			Point mouseToScene = new Point();
 			mouseToScene.setLocation(event.getSceneX(), event.getSceneY());
-			
+
 			if (mandelImageView.isHover())
 			{
 				Point mouseToNode = getMouseRelativeToTheMiddleOfMandelbrotImageView(mouseToScene);
@@ -676,8 +730,6 @@ public class GUI extends Group
 		});
 
 	}
-	
-	
 
 	private void setKeyListener()
 	{
@@ -753,5 +805,5 @@ public class GUI extends Group
 		;
 
 	}
-	
+
 }
