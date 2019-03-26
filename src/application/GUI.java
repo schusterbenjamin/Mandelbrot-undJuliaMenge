@@ -61,6 +61,7 @@ public class GUI extends Group
 	boolean juliaIsFullscreen = false;
 
 	CheckBox rotate;
+	Timeline rotateTimer;
 	boolean rotatebool = false;
 	Slider rotateSpeed;
 	Slider rotateRadius;
@@ -251,7 +252,7 @@ public class GUI extends Group
 
 	private void createColorDropLists()
 	{
-		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy", "black & white", "mandala", "crane", "gray", "test");
+		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy", "black & white", "mandala", "crane", "gray", "blue-orange", "test");
 		mandelColor = new ComboBox<String>(options);
 		mandelColor.setValue("white & black");
 		mandelColor.setId("btn");
@@ -340,6 +341,15 @@ public class GUI extends Group
 	{
 
 		rotate = new CheckBox();
+		rotate.setOnMouseClicked((MouseEvent e) ->{
+			if(!rotatebool) {
+				rotatebool = true;
+				rotateTimer.play();
+			}else {
+				rotatebool = false;
+				rotateTimer.stop();
+			}
+		});
 		add(rotate);
 
 		rotateSpeed = new Slider();
@@ -569,31 +579,14 @@ public class GUI extends Group
 	private void setRotateTimeline()
 	{
 
-		Timeline rotateTimer = new Timeline(new KeyFrame(Duration.millis(50), new EventHandler<ActionEvent>()
+		rotateTimer = new Timeline(new KeyFrame(Duration.millis(50), new EventHandler<ActionEvent>()
 		{
 
 			@Override
 			public void handle(ActionEvent arg0)
 			{
 
-				if (rotate.isSelected())
-				{
-					rotatebool = true;
-//					juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() / 10);
-//					mandelbrotMenge.setMaxIterations(mandelbrotMenge.getMaxIterations() / 10);
-				}
-				else
-				{
-					rotatebool = false;
-					if (!mandelIsFullscreen && !juliaIsFullscreen)
-					{
-//						juliaMenge.setMaxIterations(juliaMenge.getMaxIterations() * 10);
-//						mandelbrotMenge.setMaxIterations(mandelbrotMenge.getMaxIterations() * 10);
-					}
-				}
-
-				if (rotatebool)
-				{
+				
 					circle += (Math.PI / (101 - (rotateSpeed.getValue())));
 
 					if (circle > 2 * Math.PI)
@@ -619,13 +612,10 @@ public class GUI extends Group
 
 					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
 					renderMandelbrot();
-				}
-
 			}
 
 		}));
 		rotateTimer.setCycleCount(Timeline.INDEFINITE);
-		rotateTimer.play();
 	}
 
 	private void setMouseListener()

@@ -23,7 +23,8 @@ abstract class Menge {
 	double zoomChangeFactor;
 	int maxIterations;
   
-	Color[] mapping;
+	Color[] blueorangeMap;
+	Color[] testMap;
 
 	int zoomSetOffChangeDivisor;
 
@@ -36,13 +37,18 @@ abstract class Menge {
 		moveSpeed = 0.05;
 		zoom = 1;
 		zoomChangeFactor = 2;
-		maxIterations = 300;
-    
-//		Test!!
+		maxIterations = 200;
+
 		
+		createMappings();
+	}
+
+	private void createMappings()
+	{
 		ArrayList<Color> colorMapList = new ArrayList<Color>();
 		
-		colorMapList.add(Color.rgb(66, 30, 15));
+		colorMapList.add(Color.rgb(30, 6, 40));
+//		colorMapList.add(Color.rgb(66, 30, 15));
 		colorMapList.add(Color.rgb(25, 7, 26));
 		colorMapList.add(Color.rgb(9, 1, 47));
 		colorMapList.add(Color.rgb(4, 4, 73));
@@ -59,8 +65,17 @@ abstract class Menge {
 	    colorMapList.add(Color.rgb(153, 87, 0));
 	    colorMapList.add(Color.rgb(106, 52, 3));
 		
-		mapping = new ColorMap(colorMapList).getColorMap();
-
+	    blueorangeMap = new ColorMap(colorMapList).getColorMap();
+	    
+	    colorMapList.clear();
+	   
+	    colorMapList.add(Color.rgb(255, 255, 255));
+	    colorMapList.add(Color.rgb(55,55,55));
+	    colorMapList.add(Color.rgb(100,100,100));
+//	    colorMapList.add(Color.rgb(10,10,10));
+	    colorMapList.add(Color.rgb(255, 255, 255));
+	    
+	    testMap = new ColorMap(colorMapList).getColorMap();
 	}
 
 	static int imageWidth = 300, imageHeight = 300;
@@ -248,31 +263,17 @@ abstract class Menge {
 				color = Color.hsb(0.95f + 10 * smooth ,0.6f,1.0f);
 				break;
 				
+			case "blue-orange":
+			    
+			    int n = iterationcount % blueorangeMap.length;
+			    color = blueorangeMap[n];
+			    
+				break;
 			case "test":
 				
-//				Color[] mapping = new Color[16];
-//				
-//				mapping[0] = Color.rgb(66, 30, 15);
-//			    mapping[1] = Color.rgb(25, 7, 26);
-//			    mapping[2] = Color.rgb(9, 1, 47);
-//			    mapping[3] = Color.rgb(4, 4, 73);
-//			    mapping[4] = Color.rgb(0, 7, 100);
-//			    mapping[5] = Color.rgb(12, 44, 138);
-//			    mapping[6] = Color.rgb(24, 82, 177);
-//			    mapping[7] = Color.rgb(57, 125, 209);
-//			    mapping[8] = Color.rgb(134, 181, 229);
-//			    mapping[9] = Color.rgb(211, 236, 248);
-//			    mapping[10] = Color.rgb(241, 233, 191);
-//			    mapping[11] = Color.rgb(248, 201, 95);
-//			    mapping[12] = Color.rgb(255, 170, 0);
-//			    mapping[13] = Color.rgb(204, 128, 0);
-//			    mapping[14] = Color.rgb(153, 87, 0);
-//			    mapping[15] = Color.rgb(106, 52, 3);
-			    
-			    int n = iterationcount % mapping.length;
+				 int k = iterationcount % testMap.length;
+				 color = testMap[k];
 				
-			    color = mapping[n];
-			    
 				break;
 			default:
 				color = Color.rgb(255, 255, 255);
