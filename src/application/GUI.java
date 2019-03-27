@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,7 +19,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
@@ -402,56 +400,12 @@ public class GUI extends Group
 		makeCustomColorMap = new Button("Make Map");
 		makeCustomColorMap.setId("btn");
 
-		// ColorPicker colorPicker = new ColorPicker();
-		// colorPicker.setOnAction((ActionEvent e) -> {
-		// System.out.println("hi there");
-		// });
 
 		makeCustomColorMap.setOnMouseClicked((MouseEvent e) ->
 		{
-			TextInputDialog dialog = new TextInputDialog("numberOfColors");
-			dialog.setTitle("Set Number of Colors");
-			dialog.setHeaderText("Please choose a number of Colors you wish");
-			dialog.setContentText("Please enter the number:");
-
-			// Traditional way to get the response value.
-			Optional<String> result = dialog.showAndWait();
-
-			if (result.isPresent())
-			{
-				try
-				{
-					int numberOfColors = Integer.parseInt(result.get());
-
-					dialog.setTitle("Color");
-					dialog.setHeaderText("Please give the color");
-					dialog.setContentText("Please enter the color:");
-
-					for (int i = 0; i < numberOfColors; i++)
-					{
-						ColorPicker d;
-						if (i != 0)
-						{
-							d = new ColorPicker(stage, this, false);
-						}
-						else
-						{
-							d = new ColorPicker(stage, this, true);
-						}
-
-						// result = dialog.showAndWait();
-						// String[] numberStrings = result.get().replaceAll(" ", "").split(",");
-						// Color c = Color.rgb(Integer.parseInt(numberStrings[0]), Integer.parseInt(numberStrings[1]), Integer.parseInt(numberStrings[2]));
-						// customColorList.add(c);
-					}
-
-				}
-				catch (Exception ef)
-				{
-					ef.printStackTrace();
-					System.out.println("Please give me a number! not something else!");
-				}
-			}
+			
+			new ColorPicker(stage, this);
+			
 		});
 		add(makeCustomColorMap);
 	}
@@ -593,17 +547,17 @@ public class GUI extends Group
 		// waitabit();
 	}
 
-	private void waitabit()
-	{
-		try
-		{
-			Thread.sleep(150);
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-	}
+//	private void waitabit()
+//	{
+//		try
+//		{
+//			Thread.sleep(150);
+//		}
+//		catch (InterruptedException e)
+//		{
+//			e.printStackTrace();
+//		}
+//	}
 
 	public Point getMouseRelativeToTheMiddleOfMandelbrotImageView(Point mouseToScene)
 	{

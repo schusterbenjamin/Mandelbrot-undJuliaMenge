@@ -3,14 +3,14 @@ package utils;
 import com.sun.javafx.scene.control.skin.CustomColorDialog;
 
 import application.GUI;
-import javafx.scene.paint.Color;
 import javafx.stage.Window;
 
+@SuppressWarnings("restriction")
 public class ColorPicker extends CustomColorDialog
 {
 
 
-	public ColorPicker(Window win, GUI gui, boolean last)
+	public ColorPicker(Window win, GUI gui)
 	{
 		super(win);
 		show();
@@ -20,17 +20,20 @@ public class ColorPicker extends CustomColorDialog
 			@Override
 			public void run()
 			{
-					gui.addColorToCustomColorList(getCustomColor(), last);
+					gui.addColorToCustomColorList(getCustomColor(), false);
+					new ColorPicker(win, gui);
+			}
+			
+		});
+		
+		setOnUse(new Runnable() {
+
+			@Override
+			public void run() {
+				gui.addColorToCustomColorList(getCustomColor(), true);
 			}
 			
 		});
 		
 	}
-	
-	public Color getCurrentColor() {
-		return getCustomColor();
-	}
-
-
-
 }

@@ -38,7 +38,7 @@ abstract class Menge {
 		moveSpeed = 0.05;
 		zoom = 1;
 		zoomChangeFactor = 2;
-		maxIterations = 300;
+		maxIterations = 1000;
 
 		
 		createMappings();
