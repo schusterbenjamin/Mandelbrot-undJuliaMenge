@@ -12,6 +12,13 @@
     -fx-stroke-width: 0.2px;
 }
 
+#cTexts{
+	-fx-font-size: 20px;
+	-fx-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 0.25px;
+}
+
 #Names {
 	-fx-font-size: 28px;
 	-fx-fill: white;

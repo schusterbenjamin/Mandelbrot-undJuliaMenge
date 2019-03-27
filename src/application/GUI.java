@@ -66,6 +66,10 @@ public class GUI extends Group {
 	boolean rotatebool = false;
 	Slider rotateSpeed;
 	Slider rotateRadius;
+	
+	Text cEquals;
+	Text plus;
+	Text i;
 
 	double circle = 0;
 	double rotateValue = 0.3;
@@ -147,11 +151,11 @@ public class GUI extends Group {
 
 		juliaRealPartOfNumber.setTranslateX(sceneWidth * 0.8);
 		juliaRealPartOfNumber.setTranslateY(sceneHeight * 0.2);
-		juliaRealPartOfNumber.setPrefSize(sceneWidth * 0.1, sceneHeight * 0.05);
+		juliaRealPartOfNumber.setPrefSize(sceneWidth * 0.08, sceneHeight * 0.05);
 
 		juliaImaginaryPartOfNumber.setTranslateX(sceneWidth * 0.9);
 		juliaImaginaryPartOfNumber.setTranslateY(sceneHeight * 0.2);
-		juliaImaginaryPartOfNumber.setPrefSize(sceneWidth * 0.1, sceneHeight * 0.05);
+		juliaImaginaryPartOfNumber.setPrefSize(sceneWidth * 0.08, sceneHeight * 0.05);
 
 		juliaImageView.setTranslateX(sceneWidth * 0.55);
 		juliaImageView.setTranslateY(sceneHeight * 0.45);
@@ -177,6 +181,16 @@ public class GUI extends Group {
 		makeCustomColorMap.setTranslateX(sceneWidth * 0.3);
 		makeCustomColorMap.setTranslateY(sceneHeight * 0.15);
 		makeCustomColorMap.setPrefSize(sceneWidth * 0.1, sceneHeight * 0.1);
+		
+		//SeedValueTexts
+		cEquals.setTranslateX(sceneWidth * 0.77);
+		cEquals.setTranslateY(sceneHeight * 0.23);
+		
+		plus.setTranslateX(sceneWidth * 0.88);
+		plus.setTranslateY(sceneHeight * 0.23);
+		
+		i.setTranslateX(sceneWidth * 0.98);
+		i.setTranslateY(sceneHeight * 0.23);
 	}
 
 	private void createMandelAndJuliaButtons() {
@@ -384,6 +398,20 @@ public class GUI extends Group {
 			customColorList.clear();
 		}
 	}
+	
+	private void createTextsForSeedValue() {
+		cEquals = new Text("c = ");
+		cEquals.setId("cTexts");
+		add(cEquals);
+		
+		plus = new Text(" + ");
+		plus.setId("cTexts");
+		add(plus);
+		
+		i = new Text(" i");
+		i.setId("cTexts");
+		add(i);
+	}
 
 	private void createGUI() {
 		createMandelAndJuliaButtons();
@@ -393,6 +421,8 @@ public class GUI extends Group {
 		createImageViews();
 		createRotateCheckBoxWithSliders();
 		createResetButtons();
+		
+		createTextsForSeedValue();
 
 		createCustomColorMapButton();
 
