@@ -25,9 +25,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import utils.ColorPicker;
 
 public class GUI extends Group
 {
@@ -65,9 +67,11 @@ public class GUI extends Group
 	boolean rotatebool = false;
 	Slider rotateSpeed;
 	Slider rotateRadius;
-	
+
 	double circle = 0;
 	double rotateValue = 0.3;
+
+	Button makeCustomColorMap;
 
 	public GUI(Scene scene, Stage stage)
 	{
@@ -174,10 +178,10 @@ public class GUI extends Group
 		rotateRadius.setTranslateY(sceneHeight * 0.4);
 		rotateRadius.setPrefWidth(sceneWidth * 0.4);
 
-		// Easter Egg
-		easterEggButton.setTranslateX(sceneWidth * 0.3);
-		easterEggButton.setTranslateY(sceneHeight * 0.15);
-		easterEggButton.setPrefSize(sceneWidth * 0.1, sceneHeight * 0.1);
+		// customColorMap
+		makeCustomColorMap.setTranslateX(sceneWidth * 0.3);
+		makeCustomColorMap.setTranslateY(sceneHeight * 0.15);
+		makeCustomColorMap.setPrefSize(sceneWidth * 0.1, sceneHeight * 0.1);
 	}
 
 	private void createMandelAndJuliaButtons()
@@ -252,7 +256,7 @@ public class GUI extends Group
 
 	private void createColorDropLists()
 	{
-		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy", "black & white", "mandala", "crane", "gray", "blue-orange", "test");
+		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy", "black & white", "mandala", "crane", "gray", "blue-orange", "test", "custom");
 		mandelColor = new ComboBox<String>(options);
 		mandelColor.setValue("white & black");
 		mandelColor.setId("btn");
@@ -341,11 +345,15 @@ public class GUI extends Group
 	{
 
 		rotate = new CheckBox();
-		rotate.setOnMouseClicked((MouseEvent e) ->{
-			if(!rotatebool) {
+		rotate.setOnMouseClicked((MouseEvent e) ->
+		{
+			if (!rotatebool)
+			{
 				rotatebool = true;
 				rotateTimer.play();
-			}else {
+			}
+			else
+			{
 				rotatebool = false;
 				rotateTimer.stop();
 			}
@@ -387,29 +395,31 @@ public class GUI extends Group
 
 	boolean herrSchroettinger = false;
 
-	private void createEasterEggButton()
+	private void createCustomColorMapButton()
 	{
-		easterEggButton = new Button();
-		easterEggButton.setId("schrbtn");
-		add(easterEggButton);
+		makeCustomColorMap = new Button("Make Map");
+		makeCustomColorMap.setId("btn");
 
-		easterEggButton.setOnMouseClicked((MouseEvent event) ->
+
+		makeCustomColorMap.setOnMouseClicked((MouseEvent e) ->
 		{
-
-			if (!herrSchroettinger)
-			{
-				scene.getStylesheets().clear();
-				scene.getStylesheets().add(getClass().getResource("application1.css").toExternalForm());
-				herrSchroettinger = true;
-			}
-			else
-			{
-				scene.getStylesheets().clear();
-				scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-				herrSchroettinger = false;
-			}
-
+			
+			new ColorPicker(stage, this);
+			
 		});
+		add(makeCustomColorMap);
+	}
+
+	ArrayList<Color> customColorList = new ArrayList<Color>();
+
+	public void addColorToCustomColorList(Color c, boolean last)
+	{
+		customColorList.add(c);
+		if (last)
+		{
+			Menge.setCustomMap(customColorList);
+			customColorList.clear();
+		}
 	}
 
 	private void createGUI()
@@ -422,8 +432,8 @@ public class GUI extends Group
 		createRotateCheckBoxWithSliders();
 		createResetButtons();
 
-		createEasterEggButton();
-		
+		createCustomColorMapButton();
+
 		setKeyListener();
 		setScrollListener();
 		setMouseListener();
@@ -514,40 +524,40 @@ public class GUI extends Group
 	{
 		this.mandelbrotMenge = mandel;
 		this.juliaMenge = julia;
-		
+
 		renderBoth();
 	}
 
 	private void renderJulia()
 	{
 		juliaMenge.renderJulia();
-//		waitabit();
+		// waitabit();
 	}
 
 	private void renderMandelbrot()
 	{
 		mandelbrotMenge.renderMandelbrot();
-//		waitabit();
+		// waitabit();
 	}
 
 	private void renderBoth()
 	{
 		juliaMenge.renderJulia();
 		mandelbrotMenge.renderMandelbrot();
-//		waitabit();
+		// waitabit();
 	}
 
-	private void waitabit()
-	{
-		try
-		{
-			Thread.sleep(150);
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-	}
+//	private void waitabit()
+//	{
+//		try
+//		{
+//			Thread.sleep(150);
+//		}
+//		catch (InterruptedException e)
+//		{
+//			e.printStackTrace();
+//		}
+//	}
 
 	public Point getMouseRelativeToTheMiddleOfMandelbrotImageView(Point mouseToScene)
 	{
@@ -574,8 +584,7 @@ public class GUI extends Group
 
 		return p;
 	}
-	
-	
+
 	private void setRotateTimeline()
 	{
 
@@ -586,32 +595,31 @@ public class GUI extends Group
 			public void handle(ActionEvent arg0)
 			{
 
-				
-					circle += (Math.PI / (101 - (rotateSpeed.getValue())));
+				circle += (Math.PI / (101 - (rotateSpeed.getValue())));
 
-					if (circle > 2 * Math.PI)
-					{
-						circle = (-2 * Math.PI);
-					}
+				if (circle > 2 * Math.PI)
+				{
+					circle = (-2 * Math.PI);
+				}
 
-					double rotatex = Math.cos(circle) * ((double) (rotateRadius.getValue()) / 100);
-					double rotatey = -Math.sin(circle) * ((double) (rotateRadius.getValue()) / 100);
+				double rotatex = Math.cos(circle) * ((double) (rotateRadius.getValue()) / 100);
+				double rotatey = -Math.sin(circle) * ((double) (rotateRadius.getValue()) / 100);
 
-					juliaRealPartOfNumber.setText("" + rotatex);
-					juliaImaginaryPartOfNumber.setText("" + rotatey);
+				juliaRealPartOfNumber.setText("" + rotatex);
+				juliaImaginaryPartOfNumber.setText("" + rotatey);
 
-					// if (rotateRadius.getValue() == 0 || rotateRadius.getValue() ==
-					// rotateRadius.getMax())
-					// {
-					// rotateValue *= -1;
-					// }
-					//
-					// rotateRadius.setValue(rotateRadius.getValue() - rotateValue);
+				// if (rotateRadius.getValue() == 0 || rotateRadius.getValue() ==
+				// rotateRadius.getMax())
+				// {
+				// rotateValue *= -1;
+				// }
+				//
+				// rotateRadius.setValue(rotateRadius.getValue() - rotateValue);
 
-					renderJulia();
+				renderJulia();
 
-					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
-					renderMandelbrot();
+				// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
+				renderMandelbrot();
 			}
 
 		}));
@@ -658,7 +666,7 @@ public class GUI extends Group
 
 			Point mouseToScene = new Point();
 			mouseToScene.setLocation(event.getSceneX(), event.getSceneY());
-			
+
 			if (mandelImageView.isHover())
 			{
 				Point mouseToNode = getMouseRelativeToTheMiddleOfMandelbrotImageView(mouseToScene);
@@ -676,8 +684,6 @@ public class GUI extends Group
 		});
 
 	}
-	
-	
 
 	private void setKeyListener()
 	{
@@ -753,5 +759,5 @@ public class GUI extends Group
 		;
 
 	}
-	
+
 }

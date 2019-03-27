@@ -25,6 +25,7 @@ abstract class Menge {
   
 	Color[] blueorangeMap;
 	Color[] testMap;
+	static Color[] customMap;
 
 	int zoomSetOffChangeDivisor;
 
@@ -37,7 +38,7 @@ abstract class Menge {
 		moveSpeed = 0.05;
 		zoom = 1;
 		zoomChangeFactor = 2;
-		maxIterations = 200;
+		maxIterations = 800;
 
 		
 		createMappings();
@@ -76,6 +77,12 @@ abstract class Menge {
 	    colorMapList.add(Color.rgb(255, 255, 255));
 	    
 	    testMap = new ColorMap(colorMapList).getColorMap();
+	    
+	    customMap = testMap;
+	}
+	
+	public static void setCustomMap(ArrayList<Color> customColorList) {
+		customMap = new ColorMap(customColorList).getColorMap();
 	}
 
 	static int imageWidth = 300, imageHeight = 300;
@@ -274,6 +281,12 @@ abstract class Menge {
 				 int k = iterationcount % testMap.length;
 				 color = testMap[k];
 				
+				break;
+			case "custom":
+				
+				 int i = iterationcount % customMap.length;
+				 color = customMap[i];
+				 
 				break;
 			default:
 				color = Color.rgb(255, 255, 255);
