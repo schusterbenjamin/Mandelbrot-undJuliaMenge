@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class ColorMap
 {
-	int colorMapLength = 90;
+	int colorMapLength = 100;
 	Color[] colorMap = new Color[colorMapLength];
 
 	public ColorMap(ArrayList<Color> colorList)
