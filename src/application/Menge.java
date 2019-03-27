@@ -28,6 +28,8 @@ abstract class Menge {
 	static Color[] customMap;
 
 	int zoomSetOffChangeDivisor;
+	
+	public static double moveCSpeed = 0.03;
 
 
 	public Menge(GUI g) {
@@ -38,7 +40,7 @@ abstract class Menge {
 		moveSpeed = 0.05;
 		zoom = 1;
 		zoomChangeFactor = 2;
-		maxIterations = 1000;
+		maxIterations = 200;
 
 		
 		createMappings();
