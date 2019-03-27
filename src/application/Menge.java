@@ -20,7 +20,7 @@ abstract class Menge {
 	double xSetOff, ySetOff;
 	double moveSpeed;
 	double zoom;
-	double zoomChangeFactor;
+	static double zoomChangeFactor;
 	int maxIterations;
   
 	Color[] blueorangeMap;
@@ -39,7 +39,7 @@ abstract class Menge {
 		ySetOff = 0;
 		moveSpeed = 0.05;
 		zoom = 1;
-		zoomChangeFactor = 2;
+		zoomChangeFactor = 1.1;
 		maxIterations = 200;
 
 
@@ -106,6 +106,10 @@ abstract class Menge {
 		this.ySetOff = ySetOff;
 	}
 
+	public void moveXSetOff(double value) {
+		xSetOff += value;
+	}
+	
 	public void moveXSetOffLeft() {
 
 		xSetOff -= moveSpeed * zoom;
@@ -118,6 +122,10 @@ abstract class Menge {
 
 	}
 
+	public void moveYSetOff(double value) {
+		ySetOff += value;
+	}
+	
 	public void moveYSetOffUp() {
 		
 		ySetOff -= moveSpeed * zoom;
@@ -176,40 +184,24 @@ abstract class Menge {
 	}
 
 	public void zoomToMouse(Point mouseToNode, double deltaY) {
-
-		zoomSetOffChangeDivisor =  imageWidth / 60;
-		
-		int xMouseSetOff = (int) (mouseToNode.getX() / zoomSetOffChangeDivisor);
-		int yMouseSetOff = (int) (mouseToNode.getY() / zoomSetOffChangeDivisor);
-
 		if (deltaY > 0) {
-			zoom /= zoomChangeFactor;
-
-		} else {
-			xMouseSetOff *= -1;
-			yMouseSetOff *= -1;
+			moveZoom(deltaY);
 		}
-
-		for (int i = 0; i < Math.abs(xMouseSetOff); i++) {
-			if (xMouseSetOff > 0) {
-				moveXSetOffRight();
-			} else {
-				moveXSetOffLeft();
-			}
-		}
-
-		for (int i = 0; i < Math.abs(yMouseSetOff); i++) {
-			if (yMouseSetOff > 0) {
-				moveYSetOffUp();
-			} else {
-				moveYSetOffDown();
-			}
-		}
-
 		if (deltaY < 0) {
-			zoom *= zoomChangeFactor;
+			moveZoom(deltaY);
 		}
-
+		
+		double xnew = (((mouseToNode.getX()) / 100) * zoom);
+		double xold = xnew * zoomChangeFactor;
+		
+		double s = (xold - xnew);
+		moveXSetOff(s);
+		
+		double ynew = (((mouseToNode.getY()) / 100) * zoom);
+		double yold = ynew * zoomChangeFactor; 
+		
+		double d = (ynew - yold);
+		moveYSetOff(d);
 	}
 
 	protected Color getColorFromIterations(int iterationcount, String clr, Point zn) {
@@ -306,8 +298,6 @@ abstract class Menge {
 
 
 			if (z.getAbsoluteValue() > 2) {
-				// System.out.println(z.getAbsoluteValue() - maxIterations);
-				// System.out.println("divergiert");
 				Point zn = new Point();
 				zn.setLocation(z.getReal(), z.getImaginary());
 				if (mandel) {
