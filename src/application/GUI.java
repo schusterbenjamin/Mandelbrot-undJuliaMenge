@@ -80,6 +80,7 @@ public class GUI extends Group
 
 	Timeline zoomTimeline;
 	boolean isZoomTimeline = false;
+	boolean isZoomTimelineNegative = false;
 
 	public GUI(Scene scene, Stage stage)
 	{
@@ -671,25 +672,41 @@ public class GUI extends Group
 			public void handle(ActionEvent arg0)
 			{
 				Point mouse = MouseInfo.getPointerInfo().getLocation();
-				
+
 				Point mouseToStage = new Point();
 				mouseToStage.setLocation(mouse.getX() - stage.getX(), mouse.getY() - stage.getY());
 
 				Point mouseToScene = new Point();
-				mouseToScene.setLocation(mouseToStage.getX() - scene.getX(),mouseToStage.getY() - scene.getY());
-				
-				 if (mandelImageView.isHover()) {
-				Point mouseToNode = getMouseRelativeToTheMiddleOfMandelbrotImageView(mouseToScene);
+				mouseToScene.setLocation(mouseToStage.getX() - scene.getX(), mouseToStage.getY() - scene.getY());
 
-				mandelbrotMenge.zoomToMouse(mouseToNode, 1);
-				renderMandelbrot();
-				 }
-				 if(juliaImageView.isHover()) {
-					 Point mouseToNode = getMouseRelativeToTheMiddleOfJuliaImageView(mouseToScene);
+				if (mandelImageView.isHover())
+				{
+					Point mouseToNode = getMouseRelativeToTheMiddleOfMandelbrotImageView(mouseToScene);
 
+					if (isZoomTimelineNegative)
+					{
+						mandelbrotMenge.zoomToMouse(mouseToNode, -1);
+					}
+					else
+					{
+						mandelbrotMenge.zoomToMouse(mouseToNode, 11);
+					}
+					renderMandelbrot();
+				}
+				if (juliaImageView.isHover())
+				{
+					Point mouseToNode = getMouseRelativeToTheMiddleOfJuliaImageView(mouseToScene);
+
+					if (isZoomTimelineNegative)
+					{
+						juliaMenge.zoomToMouse(mouseToNode, -1);
+					}
+					else
+					{
 						juliaMenge.zoomToMouse(mouseToNode, 1);
-						renderJulia();
-				 }
+					}
+					renderJulia();
+				}
 
 			}
 
@@ -809,9 +826,17 @@ public class GUI extends Group
 							}
 							else
 							{
-								Menge.zoomChangeFactor = 2;
-								zoomTimeline.stop();
-								isZoomTimeline = false;
+								if (!isZoomTimelineNegative)
+								{
+									isZoomTimelineNegative = true;
+								}
+								else
+								{
+									Menge.zoomChangeFactor = 2;
+									zoomTimeline.stop();
+									isZoomTimeline = false;
+									isZoomTimelineNegative = false;
+								}
 							}
 							break;
 					}
@@ -847,9 +872,17 @@ public class GUI extends Group
 							}
 							else
 							{
-								Menge.zoomChangeFactor = 2;
-								zoomTimeline.stop();
-								isZoomTimeline = false;
+								if (!isZoomTimelineNegative)
+								{
+									isZoomTimelineNegative = true;
+								}
+								else
+								{
+									Menge.zoomChangeFactor = 2;
+									zoomTimeline.stop();
+									isZoomTimeline = false;
+									isZoomTimelineNegative = false;
+								}
 							}
 							break;
 					}
