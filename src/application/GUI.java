@@ -820,7 +820,7 @@ public class GUI extends Group
 						case "Z":
 							if (!isZoomTimeline)
 							{
-								Menge.zoomChangeFactor = 1.5;
+								Menge.zoomChangeFactor = 1.04;
 								zoomTimeline.play();
 								isZoomTimeline = true;
 							}
@@ -878,7 +878,7 @@ public class GUI extends Group
 								}
 								else
 								{
-									Menge.zoomChangeFactor = 1.1;
+									Menge.zoomChangeFactor = 1.5;
 									zoomTimeline.stop();
 									isZoomTimeline = false;
 									isZoomTimelineNegative = false;
