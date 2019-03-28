@@ -228,7 +228,7 @@ public class GUI extends Group
 
 			BufferedImage imageToSave = mandelbrotMenge.createBufferedImageOfMandelbrotSet();
 
-			mandelbrotMenge.saveImage(imageToSave, "/Mandelbrot.jpg");
+			mandelbrotMenge.saveImage(imageToSave, "/Mandelbrot");
 
 		});
 
@@ -255,7 +255,7 @@ public class GUI extends Group
 
 			BufferedImage imageToSave = juliaMenge.createBufferedImageOfJuliaSet();
 
-			juliaMenge.saveImage(imageToSave, "/Juliamenge_c=" + juliaMenge.realOfC + "+" + juliaMenge.imaginaryOfC + "i" + ".jpg");
+			juliaMenge.saveImage(imageToSave, "/Juliamenge_c=" + juliaMenge.realOfC + "+" + juliaMenge.imaginaryOfC + "i");
 
 		});
 
@@ -820,7 +820,7 @@ public class GUI extends Group
 						case "Z":
 							if (!isZoomTimeline)
 							{
-								Menge.zoomChangeFactor = 1.04;
+								Menge.zoomChangeFactor = 1.5;
 								zoomTimeline.play();
 								isZoomTimeline = true;
 							}
@@ -832,7 +832,7 @@ public class GUI extends Group
 								}
 								else
 								{
-									Menge.zoomChangeFactor = 2;
+									Menge.zoomChangeFactor = 1.5;
 									zoomTimeline.stop();
 									isZoomTimeline = false;
 									isZoomTimelineNegative = false;
@@ -878,7 +878,7 @@ public class GUI extends Group
 								}
 								else
 								{
-									Menge.zoomChangeFactor = 2;
+									Menge.zoomChangeFactor = 1.1;
 									zoomTimeline.stop();
 									isZoomTimeline = false;
 									isZoomTimelineNegative = false;

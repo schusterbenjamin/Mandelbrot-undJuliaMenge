@@ -76,7 +76,7 @@ public class Mandelbrotmenge extends Menge
 	public BufferedImage createBufferedImageOfMandelbrotSet()
 	{
 
-		setMaxIterations(getMaxIterations() * 2);
+		setMaxIterations(getMaxIterations() * 4);
 		setZoom(getZoom() / 10);
 
 		int imageToSaveWidth = 3000, imageToSaveHeight = 3000;
@@ -96,7 +96,7 @@ public class Mandelbrotmenge extends Menge
 			}
 		}
 
-		setMaxIterations(getMaxIterations() / 2);
+		setMaxIterations(getMaxIterations() / 4);
 		setZoom(getZoom() * 10);
 
 		return mandelbrotImage;

@@ -81,7 +81,7 @@ public class Juliamenge extends Menge
 	public BufferedImage createBufferedImageOfJuliaSet()
 	{
 
-		setMaxIterations(getMaxIterations() * 2);
+		setMaxIterations(getMaxIterations() * 4);
 		setZoom(getZoom() / 10);
 
 		int imageToSaveWidth = 3000, imageToSaveHeight = 3000;
@@ -101,7 +101,7 @@ public class Juliamenge extends Menge
 			}
 		}
 
-		setMaxIterations(getMaxIterations() / 2);
+		setMaxIterations(getMaxIterations() / 4);
 		setZoom(getZoom() * 10);
 
 		return juliaImage;
