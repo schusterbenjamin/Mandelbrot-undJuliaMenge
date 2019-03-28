@@ -184,24 +184,30 @@ abstract class Menge {
 	}
 
 	public void zoomToMouse(Point mouseToNode, double deltaY) {
-		if (deltaY > 0) {
-			moveZoom(deltaY);
-		}
-		if (deltaY < 0) {
-			moveZoom(deltaY);
-		}
+		
 		
 		double xnew = (((mouseToNode.getX()) / 100) * zoom);
-		double xold = xnew * zoomChangeFactor;
+		double ynew = (((mouseToNode.getY()) / 100) * zoom);
+		
+		double xold, yold;
+		
+		if (deltaY > 0) {
+			moveZoom(deltaY);
+			xold = xnew * zoomChangeFactor;
+			yold = ynew * zoomChangeFactor; 
+		}else{
+			moveZoom(deltaY);
+			xold = xnew / zoomChangeFactor;
+			yold = ynew / zoomChangeFactor; 
+		}
 		
 		double s = (xold - xnew);
 		moveXSetOff(s);
 		
-		double ynew = (((mouseToNode.getY()) / 100) * zoom);
-		double yold = ynew * zoomChangeFactor; 
 		
 		double d = (ynew - yold);
 		moveYSetOff(d);
+		
 	}
 
 	protected Color getColorFromIterations(int iterationcount, String clr, Point zn) {
