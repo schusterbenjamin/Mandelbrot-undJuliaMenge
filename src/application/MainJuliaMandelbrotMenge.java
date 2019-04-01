@@ -12,39 +12,37 @@ public class MainJuliaMandelbrotMenge extends Application
 	Stage stage;
 
 	GUI gui;
-	Mandelbrotmenge mandelbrotMenge;
-	Juliamenge juliaMenge;
-
-	boolean mousePressed;
-
+	
 	@Override
 	public void start(Stage primaryStage)
 	{
 		try
 		{
-			 stage = new Stage();
-			 root = new BorderPane();
-			 scene = new Scene(root, 1000, 600);
+			stage = new Stage();
+			root = new BorderPane();
+			scene = new Scene(root, 1000, 600);
 			
-			 gui = new GUI(scene, stage);
-			 root.getChildren().add(gui);
-			
-			 mandelbrotMenge = new Mandelbrotmenge(gui);
-			 juliaMenge = new Juliamenge(gui);
-			
-			 gui.setMandelbrotmengeAndJuliamenge(mandelbrotMenge, juliaMenge);
-			
-			 stage.setResizable(true);
-			
-			 stage.setTitle("Mandelbrot und Juliamenge");
-			 scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			 stage.setScene(scene);
-			 stage.show();
+//			stage.getIcons().add(new Image(MainJuliaMandelbrotMenge.class.getResourceAsStream("back1"))); //TODO: try something
+
+			gui = new GUI(scene, stage);
+			root.getChildren().add(gui);
+
+			stage.setResizable(true);
+
+			stage.setTitle("Mandelbrot und Juliamenge");
+			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			stage.setScene(scene);
+			stage.show();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static void main(String args[])
+	{
+		launch(args);
 	}
 
 }

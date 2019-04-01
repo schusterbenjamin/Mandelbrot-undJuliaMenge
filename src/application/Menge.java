@@ -19,29 +19,23 @@ abstract class Menge
 	GUI gui;
 
 	double xSetOff, ySetOff;
-	double moveSpeed;
-	double zoom;
-	static double zoomChangeFactor;
-	int maxIterations;
+	double moveSpeed = 0.05;
+	double zoom = 1;
+	static double zoomChangeFactor = 2;
+	int maxIterations = 250;
+	double iterationZoomFactor = 1;
+
+	int iterationChangeOnSave = 3;
 
 	Color[] blueorangeMap;
 	Color[] testMap;
 	static Color[] customMap;
-
-	int zoomSetOffChangeDivisor;
 
 	public static double moveCSpeed = 0.03;
 
 	public Menge(GUI g)
 	{
 		gui = g;
-
-		xSetOff = 0;
-		ySetOff = 0;
-		moveSpeed = 0.05;
-		zoom = 1;
-		zoomChangeFactor = 2;
-		maxIterations = 200;
 
 		createMappings();
 	}
@@ -50,9 +44,9 @@ abstract class Menge
 	{
 		ArrayList<Color> colorMapList = new ArrayList<Color>();
 
-		colorMapList.add(Color.rgb(30, 6, 40));
+		// colorMapList.add(Color.rgb(30, 6, 40));
 		// colorMapList.add(Color.rgb(66, 30, 15));
-		colorMapList.add(Color.rgb(25, 7, 26));
+		// colorMapList.add(Color.rgb(25, 7, 26));
 		colorMapList.add(Color.rgb(9, 1, 47));
 		colorMapList.add(Color.rgb(4, 4, 73));
 		colorMapList.add(Color.rgb(0, 7, 100));
@@ -153,10 +147,14 @@ abstract class Menge
 		if (deltaY > 0)
 		{
 			zoom /= zoomChangeFactor;
+			if (maxIterations < 600)
+				maxIterations *= iterationZoomFactor;
 		}
 		else
 		{
 			zoom *= zoomChangeFactor;
+			if (maxIterations > 250)
+				maxIterations /= iterationZoomFactor;
 		}
 	}
 
@@ -225,16 +223,15 @@ abstract class Menge
 			xnew = xold * zoomChangeFactor;
 			ynew = yold * zoomChangeFactor;
 		}
-		
+
 		double s = (xold - xnew);
 		moveXSetOff(s);
 
 		double d = (yold - ynew);
 		moveYSetOff(d);
-
 	}
 
-	protected Color getColorFromIterations(int iterationcount, String clr, Point zn)
+	private Color getColorFromIterations(int iterationcount, String clr, KomplexeZahl zn)
 	{
 
 		Color color = null;
@@ -270,31 +267,28 @@ abstract class Menge
 			case "crazy":
 				int crazycount = (int) (Math.random() * 100);
 
-				if (crazycount % 3 == 0)
+				switch (crazycount % 3)
 				{
-					color = Color.rgb(iterationcountForOldMappings, 0, 0);
-				}
-				if (crazycount % 3 == 1)
-				{
-					color = Color.rgb(0, iterationcountForOldMappings, 0);
-				}
-				if (crazycount % 3 == 2)
-				{
-					color = Color.rgb(0, 0, iterationcountForOldMappings);
+					case 0:
+						color = Color.rgb(iterationcountForOldMappings, 0, 0);
+						break;
+					case 1:
+						color = Color.rgb(0, iterationcountForOldMappings, 0);
+						break;
+					case 2:
+						color = Color.rgb(0, 0, iterationcountForOldMappings);
+						break;
 				}
 				break;
 			case "mandala":
-				double x = zn.getX();
-				double y = zn.getY();
+				double x = zn.getReal();
+				double y = zn.getImaginary();
 				double testValue = (Math.log(Math.sqrt(x * x + y * y))) / Math.pow(2, iterationcountForOldMappings) * Math.pow(x * x, Math.abs(y)) + 1;
 				color = Color.rgb(255, 255, 255); // TODO: remove this
 				color = Color.rgb(0, 0, (int) (255 / testValue));
 				break;
 			case "crane":
-
-				KomplexeZahl test = new KomplexeZahl(zn.getX(), zn.getY());
-
-				double smooth = iterationcount + 1 - Math.log(Math.log(test.getAbsoluteValue())) / Math.log(2);
+				double smooth = iterationcount + 1 - Math.log(Math.log(zn.getAbsoluteValue())) / Math.log(2);
 				// Yayyyy
 				color = Color.hsb(0.95f + 10 * smooth, 0.6f, 1.0f);
 				break;
@@ -334,15 +328,13 @@ abstract class Menge
 
 			if (z.getAbsoluteValue() > 2)
 			{
-				Point zn = new Point();
-				zn.setLocation(z.getReal(), z.getImaginary());
 				if (mandel)
 				{
-					return getColorFromIterations(i, gui.getMandelColor(), zn);
+					return getColorFromIterations(i, gui.getMandelColor(), z);
 				}
 				else
 				{
-					return getColorFromIterations(i, gui.getJuliaColor(), zn);
+					return getColorFromIterations(i, gui.getJuliaColor(), z);
 				}
 			}
 		}

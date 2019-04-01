@@ -107,6 +107,11 @@ public class GUI extends Group
 		Dimension screenSizeFromAWT = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		screenWidth = (int) screenSizeFromAWT.getWidth();
 		screenHeight = (int) screenSizeFromAWT.getHeight();
+		
+		mandelbrotMenge = new Mandelbrotmenge(this);
+		juliaMenge = new Juliamenge(this);
+		
+		renderBoth();
 
 	}
 
@@ -277,12 +282,12 @@ public class GUI extends Group
 	{
 		ObservableList<String> options = FXCollections.observableArrayList("red", "green", "blue", "crazy", "black & white", "mandala", "crane", "gray", "blue-orange", "test", "custom");
 		mandelColor = new ComboBox<String>(options);
-		mandelColor.setValue("white & black");
+		mandelColor.setValue("blue-orange");
 		mandelColor.setId("btn");
 		add(mandelColor);
 
 		juliaColor = new ComboBox<String>(options);
-		juliaColor.setValue("white & black");
+		juliaColor.setValue("crane");
 		juliaColor.setId("btn");
 		add(juliaColor);
 	}
@@ -363,6 +368,8 @@ public class GUI extends Group
 	private void createRotateCheckBoxWithSliders()
 	{
 
+		//TODO: uncomment if wished the adds in order to add rotateStuff
+		
 		rotate = new CheckBox();
 		rotate.setOnMouseClicked((MouseEvent e) ->
 		{
@@ -377,13 +384,13 @@ public class GUI extends Group
 				rotateTimer.stop();
 			}
 		});
-		add(rotate);
+//		add(rotate);
 
 		rotateSpeed = new Slider();
-		add(rotateSpeed);
+//		add(rotateSpeed);
 
 		rotateRadius = new Slider();
-		add(rotateRadius);
+//		add(rotateRadius);
 
 	}
 
@@ -395,6 +402,7 @@ public class GUI extends Group
 			mandelbrotMenge.setxSetOff(0);
 			mandelbrotMenge.setySetOff(0);
 			mandelbrotMenge.setZoom(1);
+			mandelbrotMenge.setMaxIterations(250);
 			renderMandelbrot();
 		});
 		mandelReset.setId("btn");
@@ -406,6 +414,7 @@ public class GUI extends Group
 			juliaMenge.setxSetOff(0);
 			juliaMenge.setySetOff(0);
 			juliaMenge.setZoom(1);
+			juliaMenge.setMaxIterations(250);
 			renderJulia();
 		});
 		juliaReset.setId("btn");
@@ -554,14 +563,6 @@ public class GUI extends Group
 	public String getMandelColor()
 	{
 		return mandelColor.getValue();
-	}
-
-	public void setMandelbrotmengeAndJuliamenge(Mandelbrotmenge mandel, Juliamenge julia)
-	{
-		this.mandelbrotMenge = mandel;
-		this.juliaMenge = julia;
-
-		renderBoth();
 	}
 
 	private void renderJulia()
