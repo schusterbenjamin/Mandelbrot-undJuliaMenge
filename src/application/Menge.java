@@ -22,7 +22,7 @@ abstract class Menge
 	double moveSpeed = 0.05;
 	double zoom = 1;
 	static double zoomChangeFactor = 2;
-	int maxIterations = 250;
+	int maxIterations = 100;
 	double iterationZoomFactor = 1;
 
 	int iterationChangeOnSave = 3;

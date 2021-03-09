@@ -384,13 +384,13 @@ public class GUI extends Group
 				rotateTimer.stop();
 			}
 		});
-//		add(rotate);
+		add(rotate);
 
 		rotateSpeed = new Slider();
-//		add(rotateSpeed);
+		add(rotateSpeed);
 
 		rotateRadius = new Slider();
-//		add(rotateRadius);
+		add(rotateRadius);
 
 	}
 
@@ -655,7 +655,7 @@ public class GUI extends Group
 
 				renderJulia();
 
-				// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
+				// rendert Mandelbrotmenge mit rotem Punkt bei dem c fuer die Juliamenge
 				renderMandelbrot();
 			}
 
@@ -719,7 +719,7 @@ public class GUI extends Group
 	private void setMouseListener()
 	{
 
-		// der Rest is in der GUI Klasse, jaa ich weiss is unübersichtlich....
+		// der Rest is in der GUI Klasse, jaa ich weiss is unuebersichtlich....
 		mandelImageView.setOnMouseDragged((MouseEvent event) ->
 		{
 			getMousePosAndRenderBoth(event);
@@ -842,7 +842,7 @@ public class GUI extends Group
 							break;
 					}
 
-					// rendert Mandelbrotmenge mit rotem Punkt bei dem c für die Juliamenge
+					// rendert Mandelbrotmenge mit rotem Punkt bei dem c fuer die Juliamenge
 					renderJulia();
 					renderMandelbrot();
 				}

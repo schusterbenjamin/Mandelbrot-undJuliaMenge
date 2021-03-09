@@ -30,7 +30,7 @@ public class MainJuliaMandelbrotMenge extends Application
 			stage.setResizable(true);
 
 			stage.setTitle("Mandelbrot und Juliamenge");
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+//			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			stage.setScene(scene);
 			stage.show();
 		}

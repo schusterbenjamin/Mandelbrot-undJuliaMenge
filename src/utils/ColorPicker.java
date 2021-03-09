@@ -1,6 +1,6 @@
 package utils;
 
-import com.sun.javafx.scene.control.skin.CustomColorDialog;
+import com.sun.javafx.scene.control.CustomColorDialog;
 
 import application.GUI;
 import javafx.stage.Window;

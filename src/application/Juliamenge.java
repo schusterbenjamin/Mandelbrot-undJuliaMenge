@@ -1,14 +1,13 @@
 package application;
 
-import java.awt.image.BufferedImage;
-
-import javax.swing.JOptionPane;
-
 import javafx.scene.Scene;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import utils.KomplexeZahl;
+
+import javax.swing.*;
+import java.awt.image.BufferedImage;
 
 public class Juliamenge extends Menge
 {
