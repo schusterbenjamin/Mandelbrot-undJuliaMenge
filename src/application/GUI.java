@@ -43,7 +43,7 @@ public class GUI extends Group
 
 	Button easterEggButton;
 
-	Mandelbrotmenge mandelbrotMenge;
+	Mandelbrotset mandelbrotMenge;
 	Text mandelbrotName;
 	Button mandelSave;
 	Button mandelRender;
@@ -52,7 +52,7 @@ public class GUI extends Group
 	ImageView mandelImageView;
 	boolean mandelIsFullscreen = false;
 
-	Juliamenge juliaMenge;
+	Juliaset juliaMenge;
 	Text juliaName;
 	Button juliaSave;
 	Button juliaRender;
@@ -108,8 +108,8 @@ public class GUI extends Group
 		screenWidth = (int) screenSizeFromAWT.getWidth();
 		screenHeight = (int) screenSizeFromAWT.getHeight();
 		
-		mandelbrotMenge = new Mandelbrotmenge(this);
-		juliaMenge = new Juliamenge(this);
+		mandelbrotMenge = new Mandelbrotset(this);
+		juliaMenge = new Juliaset(this);
 		
 		renderBoth();
 
@@ -146,7 +146,7 @@ public class GUI extends Group
 		mandelReset.setTranslateY(sceneHeight * 0.95);
 
 		int size = (int) (Math.min(sceneWidth * .5, sceneHeight * .5));
-		Menge.setImageSize(size, size);
+		Set.setImageSize(size, size);
 
 		// Julia Stuff
 		juliaName.setTranslateX(sceneWidth * 0.55);
@@ -314,8 +314,8 @@ public class GUI extends Group
 				if (mandelImageView.isHover())
 				{
 
-					double x = (((event.getX() - Menge.getImageWidth() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
-					double y = -(((event.getY() - Menge.getImageHeight() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
+					double x = (((event.getX() - Set.getImageWidth() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
+					double y = -(((event.getY() - Set.getImageHeight() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
 
 					juliaRealPartOfNumber.setText(x + "");
 					juliaImaginaryPartOfNumber.setText(y + "");
@@ -444,7 +444,7 @@ public class GUI extends Group
 		customColorList.add(c);
 		if (last)
 		{
-			Menge.setCustomMap(customColorList);
+			Set.setCustomMap(customColorList);
 			customColorList.clear();
 		}
 	}
@@ -494,7 +494,7 @@ public class GUI extends Group
 		node.setTranslateX(0);
 		node.setTranslateY(0);
 
-		Menge.setImageSize(screenWidth, screenHeight);
+		Set.setImageSize(screenWidth, screenHeight);
 
 		if (node == mandelImageView)
 		{
@@ -520,7 +520,7 @@ public class GUI extends Group
 		renderJulia();
 
 		int size = (int) (Math.min(scene.getWidth() * .5, scene.getHeight() * .5));
-		Menge.setImageSize(size, size);
+		Set.setImageSize(size, size);
 	}
 
 	public void removeEverythingFromGroup()
@@ -613,8 +613,8 @@ public class GUI extends Group
 		int x = (int) (p.getX() - node.getTranslateX());
 		int y = (int) (p.getY() - node.getTranslateY());
 
-		x -= Menge.imageWidth / 2;
-		y -= Menge.imageHeight / 2;
+		x -= Set.imageWidth / 2;
+		y -= Set.imageHeight / 2;
 		y *= -1;
 
 		p.setLocation(x, y);
@@ -736,8 +736,8 @@ public class GUI extends Group
 			if (mandelImageView.isHover())
 			{
 
-				double x = (((event.getX() - Menge.getImageWidth() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
-				double y = -(((event.getY() - Menge.getImageHeight() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
+				double x = (((event.getX() - Set.getImageWidth() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.xSetOff);
+				double y = -(((event.getY() - Set.getImageHeight() / 2) / 100) * mandelbrotMenge.zoom + mandelbrotMenge.ySetOff);
 
 				juliaRealPartOfNumber.setText(x + "");
 				juliaImaginaryPartOfNumber.setText(y + "");
@@ -807,21 +807,21 @@ public class GUI extends Group
 							mandelbrotMenge.moveYSetOffDown();
 							break;
 						case "I":
-							juliaImaginaryPartOfNumber.setText(Double.parseDouble(juliaImaginaryPartOfNumber.getText()) + Menge.moveCSpeed * mandelbrotMenge.zoom + "");
+							juliaImaginaryPartOfNumber.setText(Double.parseDouble(juliaImaginaryPartOfNumber.getText()) + Set.moveCSpeed * mandelbrotMenge.zoom + "");
 							break;
 						case "K":
-							juliaImaginaryPartOfNumber.setText(Double.parseDouble(juliaImaginaryPartOfNumber.getText()) - Menge.moveCSpeed * mandelbrotMenge.zoom + "");
+							juliaImaginaryPartOfNumber.setText(Double.parseDouble(juliaImaginaryPartOfNumber.getText()) - Set.moveCSpeed * mandelbrotMenge.zoom + "");
 							break;
 						case "J":
-							juliaRealPartOfNumber.setText(Double.parseDouble(juliaRealPartOfNumber.getText()) - Menge.moveCSpeed * mandelbrotMenge.zoom + "");
+							juliaRealPartOfNumber.setText(Double.parseDouble(juliaRealPartOfNumber.getText()) - Set.moveCSpeed * mandelbrotMenge.zoom + "");
 							break;
 						case "L":
-							juliaRealPartOfNumber.setText(Double.parseDouble(juliaRealPartOfNumber.getText()) + Menge.moveCSpeed * mandelbrotMenge.zoom + "");
+							juliaRealPartOfNumber.setText(Double.parseDouble(juliaRealPartOfNumber.getText()) + Set.moveCSpeed * mandelbrotMenge.zoom + "");
 							break;
 						case "Z":
 							if (!isZoomTimeline)
 							{
-								Menge.zoomChangeFactor = 1.04;
+								Set.zoomChangeFactor = 1.04;
 								zoomTimeline.play();
 								isZoomTimeline = true;
 							}
@@ -833,7 +833,7 @@ public class GUI extends Group
 								}
 								else
 								{
-									Menge.zoomChangeFactor = 1.5;
+									Set.zoomChangeFactor = 1.5;
 									zoomTimeline.stop();
 									isZoomTimeline = false;
 									isZoomTimelineNegative = false;
@@ -867,7 +867,7 @@ public class GUI extends Group
 						case "Z":
 							if (!isZoomTimeline)
 							{
-								Menge.zoomChangeFactor = 1.04;
+								Set.zoomChangeFactor = 1.04;
 								zoomTimeline.play();
 								isZoomTimeline = true;
 							}
@@ -879,7 +879,7 @@ public class GUI extends Group
 								}
 								else
 								{
-									Menge.zoomChangeFactor = 1.5;
+									Set.zoomChangeFactor = 1.5;
 									zoomTimeline.stop();
 									isZoomTimeline = false;
 									isZoomTimelineNegative = false;
