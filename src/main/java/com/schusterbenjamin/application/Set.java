@@ -1,4 +1,4 @@
-package application;
+package com.schusterbenjamin.application;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
@@ -10,8 +10,8 @@ import javax.imageio.ImageIO;
 
 import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
-import utils.ColorMap;
-import utils.Complexnumber;
+import com.schusterbenjamin.utils.ColorMap;
+import com.schusterbenjamin.utils.Complexnumber;
 
 abstract class Set
 {

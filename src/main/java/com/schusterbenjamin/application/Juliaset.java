@@ -1,10 +1,10 @@
-package application;
+package com.schusterbenjamin.application;
 
 import javafx.scene.Scene;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import utils.Complexnumber;
+import com.schusterbenjamin.utils.Complexnumber;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;

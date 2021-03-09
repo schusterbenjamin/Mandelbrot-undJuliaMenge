@@ -1,4 +1,4 @@
-package application;
+package com.schusterbenjamin.application;
 
 import java.awt.image.BufferedImage;
 
@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import utils.Complexnumber;
+import com.schusterbenjamin.utils.Complexnumber;
 
 public class Mandelbrotset extends Set
 {

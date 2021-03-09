@@ -1,4 +1,4 @@
-package application;
+package com.schusterbenjamin.application;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -30,7 +30,7 @@ public class Main extends Application
 			stage.setResizable(true);
 
 			stage.setTitle("Mandelbrot- and Juliaset");
-//			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/application.css").toExternalForm());
 			stage.setScene(scene);
 			stage.show();
 		}

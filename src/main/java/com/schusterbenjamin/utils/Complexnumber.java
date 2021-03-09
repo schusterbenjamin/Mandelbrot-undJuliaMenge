@@ -1,4 +1,4 @@
-package utils;
+package com.schusterbenjamin.utils;
 
 public class Complexnumber
 {

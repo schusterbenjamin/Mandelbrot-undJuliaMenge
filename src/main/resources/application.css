@@ -1,0 +1,89 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.root {
+	   -fx-background-color: gray; 
+} 
+
+
+.text{
+	-fx-font-size: 16.0px;
+	-fx-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 0.2px;
+}
+
+.combo-box-popup .list-cell{
+	-fx-background-color: gray;
+}
+
+.combo-box-popup .list-cell:hover{
+	-fx-background-color: black;
+}
+
+.combo-box-popup .list-cell:selected{
+	-fx-background-color: black;
+}
+
+#cTexts{
+	-fx-font-size: 20.0px;
+	-fx-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 0.25px;
+}
+
+#Names {
+	-fx-font-size: 28.0px;
+	-fx-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 0.2px;
+}
+
+
+#check {
+	 -fx-fill: FIREBRICK;
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );  
+}
+
+#btn {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(rgb(80.0,80.0,80.0), rgb(100.0,100.0,100.0));
+    -fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );
+}
+
+#btn:hover {
+    -fx-background-color: linear-gradient(rgb(200.0,200.0,200.0), rgb(100.0, 100.0, 100.0));
+}
+
+#coords{
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );
+}
+
+#schrbtn{
+	 -fx-background-color: rgba(255.0, 255.0, 255.0, 0.0);
+}
+#schrbtn:hover {
+	-fx-background-color: rgba(0.0,0.0,0.0,0.75);
+}
+
+#sliderR{
+	-fx-color: rgb(255.0,0.0,0.0);
+}
+#sliderG
+{
+    -fx-color:rgb(0.0,255.0,0.0);
+}
+#sliderB
+{
+    -fx-color:rgb(0.0,0.0,255.0);
+}
+#sliderS
+{
+    -fx-color:rgb(0.0,0.0,0.0);
+}
+
+
